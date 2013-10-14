@@ -14,7 +14,7 @@ body {
 
 /* line 48 */
 header {
-  margin: 30px 50px 50px;
+  margin: 30px 50px;
   background-color: white;
   color: #3d3d3d;
 }
@@ -25,6 +25,7 @@ header h1 {
   font-weight: 100;
   line-height: 44px;
   margin-top: 0px;
+  margin-bottom: 0px;
 }
 /* line 20 */
 header a {
@@ -36,7 +37,7 @@ header a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 57 */
+/* line 58 */
 header #expander {
   display: inline-block;
   vertical-align: top;
@@ -48,13 +49,13 @@ header #expander {
   width: 30px;
   color: white;
 }
-/* line 66 */
+/* line 67 */
 header #expander:hover {
   background-color: white;
   text-decoration: none;
   color: black;
 }
-/* line 72 */
+/* line 73 */
 header #secretnav {
   height: 24px;
   margin: 10px 20px 10px 20px;
@@ -63,7 +64,7 @@ header #secretnav {
   font-size: 24px;
 }
 
-/* line 81 */
+/* line 82 */
 #sidebar {
   display: inline-block;
   vertical-align: top;
@@ -81,31 +82,31 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 88 */
+/* line 89 */
 #sidebar nav .contents .topic-title {
   font-weight: bold;
   font-size: 110%;
   text-align: center;
 }
-/* line 89 */
+/* line 90 */
 #sidebar nav .contents ul {
   list-style-type: upper-roman;
 }
-/* line 91 */
+/* line 92 */
 #sidebar nav .contents ul ul {
   list-style-type: lower-latin;
 }
-/* line 93 */
+/* line 94 */
 #sidebar nav .contents ul ul ul {
   list-style-type: lower-greek;
 }
-/* line 97 */
+/* line 98 */
 #sidebar nav p, #sidebar nav ul {
   margin-top: 4px;
   margin-bottom: 4px;
 }
 
-/* line 101 */
+/* line 102 */
 #content {
   display: inline-block;
   vertical-align: top;
@@ -120,11 +121,11 @@ header #secretnav {
 #content a:hover {
   background-color: yellow;
 }
-/* line 106 */
+/* line 107 */
 #content .post-list {
   list-style: none outside none;
 }
-/* line 109 */
+/* line 110 */
 #content h2 {
   background-color: white;
   color: #3d3d3d;
@@ -139,7 +140,7 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 111 */
+/* line 112 */
 #content .category-list dt {
   font-size: 120%;
   margin: 0px 0px 0px 10px;
@@ -156,12 +157,12 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 112 */
+/* line 113 */
 #content .category-list dd {
   margin-left: none;
   padding-left: none;
 }
-/* line 114 */
+/* line 115 */
 #content hr {
   margin-top: 0px;
   margin-bottom: 30px;
@@ -170,12 +171,12 @@ header #secretnav {
   font-size: 25px;
   line-height: 10px;
 }
-/* line 121 */
+/* line 122 */
 #content hr:after {
   content: "- ∞ -";
   display: inline;
 }
-/* line 126 */
+/* line 127 */
 #content aside {
   padding: 10px;
   background-color: #f7f7f9;
@@ -184,7 +185,7 @@ header #secretnav {
   border-radius: 4px;
 }
 
-/* line 136 */
+/* line 137 */
 footer p {
   font-size: 80%;
   text-align: center;
