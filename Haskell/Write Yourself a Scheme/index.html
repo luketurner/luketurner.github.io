@@ -175,7 +175,7 @@ to deal with the Parser monad:</p>
                <span class="o">...</span>
              <span class="o">|</span> <span class="kt">Complex</span> <span class="kt">Couble</span>
 </pre></div>
-<p>We only need to derive <cite>Eq</cite> once we get into chapter 6 or thereabouts.</p>
+<p>We only need to derive <code>Eq</code> once we get into chapter 6 or thereabouts.</p>
 </div>
 </div>
 <div class="section" id="chapter-3-4">
@@ -198,7 +198,7 @@ to deal with the Parser monad:</p>
     <span class="kr">where</span> <span class="n">descriptor</span> <span class="sc">','</span> <span class="ow">=</span> <span class="s">"unquote"</span>
       <span class="n">descriptor</span> <span class="sc">'@'</span> <span class="ow">=</span> <span class="s">"unquote-list"</span>
 </pre></div>
-<p>Once again, too lazy to left-factor the grammar. I use pattern matching to check the value of <cite>style</cite>, which contains either <cite>@</cite> or <cite>,</cite>.</p>
+<p>Once again, too lazy to left-factor the grammar. I use pattern matching to check the value of <code>style</code>, which contains either <code>@</code> or <code>,</code>.</p>
 </div>
 <div class="section" id="id2">
 <h4><a class="toc-backref" href="#id19">Exercise 2</a></h4>
@@ -283,7 +283,7 @@ to deal with the Parser monad:</p>
 </div>
 <div class="section" id="id5">
 <h4><a class="toc-backref" href="#id24">Exercise 3</a></h4>
-<p>Using the same <cite>typePredicate</cite> function defined in Exercise 1:</p>
+<p>Using the same <code>typePredicate</code> function defined in Exercise 1:</p>
 <div class="highlight"><pre><span class="nf">primitives</span> <span class="ow">=</span> <span class="p">[</span> <span class="o">...</span>
               <span class="p">(</span><span class="s">"symbol?"</span><span class="p">,</span> <span class="n">typePredicate</span> <span class="n">isSymbol</span><span class="p">),</span>
               <span class="o">...</span> <span class="p">]</span>
@@ -301,8 +301,8 @@ to deal with the Parser monad:</p>
 <h3><a class="toc-backref" href="#id25">Chapter 6.4</a></h3>
 <div class="section" id="id6">
 <h4><a class="toc-backref" href="#id26">Exercise 1</a></h4>
-<p>I changed the definition of <cite>if</cite> to the following (it’s one of the pattern matches
-in <cite>eval</cite>:</p>
+<p>I changed the definition of <code>if</code> to the following (it’s one of the pattern matches
+in <code>eval</code>:</p>
 <div class="highlight"><pre><span class="nf">eval</span> <span class="p">(</span><span class="kt">List</span> <span class="p">[</span><span class="kt">Atom</span> <span class="s">"if"</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">conseq</span><span class="p">,</span> <span class="n">alt</span><span class="p">])</span> <span class="ow">=</span>
     <span class="kr">do</span>
         <span class="n">result</span> <span class="ow">&lt;-</span> <span class="n">eval</span> <span class="n">pred</span>
@@ -311,11 +311,11 @@ in <cite>eval</cite>:</p>
             <span class="kt">Bool</span> <span class="kt">True</span> <span class="ow">-&gt;</span> <span class="n">eval</span> <span class="n">conseq</span>
             <span class="n">otherwise</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="o">$</span> <span class="kt">TypeMismatch</span> <span class="s">"bool"</span> <span class="n">result</span> <span class="c1">-- Ex. 6.4.1</span>
 </pre></div>
-<p>This way a non-boolean value passed to <cite>if</cite> as a predicate causes a type error.</p>
+<p>This way a non-boolean value passed to <code>if</code> as a predicate causes a type error.</p>
 </div>
 <div class="section" id="id7">
 <h4><a class="toc-backref" href="#id27">Exercise 2</a></h4>
-<p>Using <cite>eqv?</cite> as a model, I wrote this pattern for <cite>equal?</cite> that compares two lists:</p>
+<p>Using <code>eqv?</code> as a model, I wrote this pattern for <code>equal?</code> that compares two lists:</p>
 <div class="highlight"><pre><span class="nf">equal</span> <span class="p">[(</span><span class="kt">DottedList</span> <span class="n">xs</span> <span class="n">x</span><span class="p">),</span> <span class="p">(</span><span class="kt">DottedList</span> <span class="n">ys</span> <span class="n">y</span><span class="p">)]</span> <span class="ow">=</span>
     <span class="n">equal</span> <span class="p">[</span><span class="kt">List</span> <span class="o">$</span> <span class="n">xs</span> <span class="o">++</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="kt">List</span> <span class="o">$</span> <span class="n">ys</span> <span class="o">++</span> <span class="p">[</span><span class="n">y</span><span class="p">]]</span>
 
@@ -326,7 +326,7 @@ in <cite>eval</cite>:</p>
                            <span class="kt">Left</span> <span class="n">err</span> <span class="ow">-&gt;</span> <span class="kt">False</span>
                            <span class="kt">Right</span> <span class="p">(</span><span class="kt">Bool</span> <span class="n">val</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">val</span>
 </pre></div>
-<p>This should go before the more general pattern <cite>equal [arg1, arg2]</cite>.</p>
+<p>This should go before the more general pattern <code>equal [arg1, arg2]</code>.</p>
 </div>
 </div>
 </div>
