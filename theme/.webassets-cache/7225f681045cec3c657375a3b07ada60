@@ -1,24 +1,25 @@
 @charset "UTF-8";
+@import url(syntax.css);
 @font-face {
   font-family: "Calluna";
   src: url("Calluna.woff");
   src: url("Calluna.ttf");
 }
 
-/* line 42 */
+/* line 44 */
 body {
   font-family: Calluna,Georgia,"Times New Roman",serif;
   color: #3d3d3d;
   font-size: 18px;
 }
 
-/* line 48 */
+/* line 50 */
 header {
   margin: 30px 50px;
   background-color: white;
   color: #3d3d3d;
 }
-/* line 50 */
+/* line 52 */
 header h1 {
   display: inline-block;
   vertical-align: top;
@@ -27,17 +28,17 @@ header h1 {
   margin-top: 0px;
   margin-bottom: 0px;
 }
-/* line 20 */
+/* line 22 */
 header a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 23 */
+/* line 25 */
 header a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 58 */
+/* line 60 */
 header #expander {
   display: inline-block;
   vertical-align: top;
@@ -49,13 +50,13 @@ header #expander {
   width: 30px;
   color: white;
 }
-/* line 67 */
+/* line 69 */
 header #expander:hover {
   background-color: white;
   text-decoration: none;
   color: black;
 }
-/* line 73 */
+/* line 75 */
 header #secretnav {
   height: 24px;
   margin: 10px 20px 10px 20px;
@@ -64,7 +65,7 @@ header #secretnav {
   font-size: 24px;
 }
 
-/* line 82 */
+/* line 84 */
 #sidebar {
   display: inline-block;
   vertical-align: top;
@@ -72,97 +73,97 @@ header #secretnav {
   background-color: white;
   color: #3d3d3d;
 }
-/* line 20 */
+/* line 22 */
 #sidebar a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 23 */
+/* line 25 */
 #sidebar a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 89 */
+/* line 91 */
 #sidebar nav .contents .topic-title {
   font-weight: bold;
   font-size: 110%;
   text-align: center;
 }
-/* line 90 */
+/* line 92 */
 #sidebar nav .contents ul {
   list-style-type: upper-roman;
 }
-/* line 92 */
+/* line 94 */
 #sidebar nav .contents ul ul {
   list-style-type: lower-latin;
 }
-/* line 94 */
+/* line 96 */
 #sidebar nav .contents ul ul ul {
   list-style-type: lower-greek;
 }
-/* line 98 */
+/* line 100 */
 #sidebar nav p, #sidebar nav ul {
   margin-top: 4px;
   margin-bottom: 4px;
 }
 
-/* line 102 */
+/* line 104 */
 #content {
   display: inline-block;
   vertical-align: top;
   margin: 10px auto;
   max-width: 700px;
 }
-/* line 31 */
+/* line 33 */
 #content a {
   color: #3333cc;
 }
-/* line 33 */
+/* line 35 */
 #content a:hover {
   background-color: yellow;
 }
-/* line 107 */
+/* line 109 */
 #content .post-list {
   list-style: none outside none;
 }
-/* line 110 */
+/* line 112 */
 #content h2 {
   background-color: white;
   color: #3d3d3d;
 }
-/* line 20 */
+/* line 22 */
 #content h2 a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 23 */
+/* line 25 */
 #content h2 a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 112 */
+/* line 114 */
 #content .category-list dt {
   font-size: 120%;
   margin: 0px 0px 0px 10px;
   background-color: white;
   color: #3d3d3d;
 }
-/* line 20 */
+/* line 22 */
 #content .category-list dt a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 23 */
+/* line 25 */
 #content .category-list dt a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 113 */
+/* line 115 */
 #content .category-list dd {
   margin-left: none;
   padding-left: none;
 }
-/* line 115 */
+/* line 117 */
 #content hr {
   margin-top: 0px;
   margin-bottom: 30px;
@@ -171,12 +172,12 @@ header #secretnav {
   font-size: 25px;
   line-height: 10px;
 }
-/* line 122 */
+/* line 124 */
 #content hr:after {
   content: "- ∞ -";
   display: inline;
 }
-/* line 127 */
+/* line 129 */
 #content aside {
   padding: 10px;
   background-color: #f7f7f9;
@@ -185,7 +186,7 @@ header #secretnav {
   border-radius: 4px;
 }
 
-/* line 137 */
+/* line 139 */
 footer p {
   font-size: 80%;
   text-align: center;

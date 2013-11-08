@@ -8,7 +8,7 @@
 	<meta name="author" content="Luke Turner">
 	<meta name="description" content="I'm blagging behind">
 	
-		<link href="/theme/css/style.min.css?3f433acb" rel="stylesheet" >
+		<link href="/theme/css/style.min.css?bf30d4a9" rel="stylesheet" >
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 		<script src="/theme/js/base.min.js?07bbe624" type="text/javascript"></script>
@@ -150,7 +150,7 @@ to deal with the Parser monad:</p>
         <span class="o">&lt;|&gt;</span> <span class="n">alphaNum</span>
     <span class="n">return</span> <span class="o">$</span> <span class="kt">Char</span> <span class="n">c</span>
 </pre></div>
-<p>When we add this to parseExpr, we need to be careful, because now we have two things that start with <code>#</code>: parseNumber (e.g. <code>#d123</code>) and parseChar (e.g. <code>#\a</code>) Instead of left-factoring, (A future exercise has us left-factoring the grammar) I’ve used the <code>try</code> function in <code>parseExpr</code>. That way we can "try" to see if the expression is a number; if it’s not, we don’t consume any input.</p>
+<p>When we add this to parseExpr, we need to be careful, because now we have two things that start with an octothorp: parseNumber (e.g. <code>#d123</code>) and parseChar (e.g. <code>#\a</code>). Instead of left-factoring (a future exercise has us left-factoring the grammar), I’ve used the <code>try</code> function in <code>parseExpr</code>. That way we can "try" to see if the expression is a number; if it’s not, we don’t consume any input.</p>
 </div>
 <div class="section" id="exercise-6">
 <h4><a class="toc-backref" href="#id15">Exercise 6</a></h4>
