@@ -127,7 +127,7 @@ to deal with the Parser monad:</p>
 <h4><a class="toc-backref" href="#id13">Exercise 4</a></h4>
 <div class="highlight"><pre><span class="nf">parseNumber</span> <span class="ow">::</span> <span class="kt">Parser</span> <span class="kt">LispVal</span>
 <span class="nf">parseNumber</span> <span class="ow">=</span> <span class="kr">do</span>
-    <span class="n">base</span> <span class="ow">&lt;-</span> <span class="n">parseNumericPrefix</span>
+    <span class="n">base</span> <span class="ow">&lt;-</span> <span class="n">option</span> <span class="n">'d'</span> <span class="p">(</span><span class="n">char</span> <span class="sc">'#'</span> <span class="o">&gt;&gt;</span> <span class="n">oneOf</span> <span class="s">"bohd"</span><span class="p">)</span>
     <span class="n">x</span> <span class="ow">&lt;-</span> <span class="kr">case</span> <span class="n">base</span> <span class="kr">of</span>
         <span class="n">'h'</span> <span class="ow">-&gt;</span> <span class="n">many1</span> <span class="n">hexDigit</span>
         <span class="n">'o'</span> <span class="ow">-&gt;</span> <span class="n">many1</span> <span class="n">octDigit</span>
