@@ -52,10 +52,18 @@ header {
 	h1 {
 		@include inline;
 		font-weight:100;
-		line-height:$header_height;
+		line-height:$font_size*1.5;
 		margin-top:0px;
 		margin-bottom:0px;
+        font-size:$font_size*1.5;
 	}
+    h2 {
+        @include inline;
+        font-weight:100;
+        font-size:$font_size;
+        line-height:$font_size*1.5;
+        margin: 0px 0px 0px 15px;
+    }
 	@include subtle_linking;
 	#expander {
 		@include inline;

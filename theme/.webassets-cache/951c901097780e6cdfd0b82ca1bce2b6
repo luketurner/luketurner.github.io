@@ -24,9 +24,19 @@ header h1 {
   display: inline-block;
   vertical-align: top;
   font-weight: 100;
-  line-height: 44px;
+  line-height: 27px;
   margin-top: 0px;
   margin-bottom: 0px;
+  font-size: 27px;
+}
+/* line 60 */
+header h2 {
+  display: inline-block;
+  vertical-align: top;
+  font-weight: 100;
+  font-size: 18px;
+  line-height: 27px;
+  margin: 0px 0px 0px 15px;
 }
 /* line 22 */
 header a {
@@ -38,7 +48,7 @@ header a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 60 */
+/* line 68 */
 header #expander {
   display: inline-block;
   vertical-align: top;
@@ -50,13 +60,13 @@ header #expander {
   width: 30px;
   color: white;
 }
-/* line 69 */
+/* line 77 */
 header #expander:hover {
   background-color: white;
   text-decoration: none;
   color: black;
 }
-/* line 75 */
+/* line 83 */
 header #secretnav {
   height: 24px;
   margin: 10px 20px 10px 20px;
@@ -65,7 +75,7 @@ header #secretnav {
   font-size: 24px;
 }
 
-/* line 84 */
+/* line 92 */
 #sidebar {
   display: inline-block;
   vertical-align: top;
@@ -83,31 +93,31 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 91 */
+/* line 99 */
 #sidebar nav .contents .topic-title {
   font-weight: bold;
   font-size: 110%;
   text-align: center;
 }
-/* line 92 */
+/* line 100 */
 #sidebar nav .contents ul {
   list-style-type: upper-roman;
 }
-/* line 94 */
+/* line 102 */
 #sidebar nav .contents ul ul {
   list-style-type: lower-latin;
 }
-/* line 96 */
+/* line 104 */
 #sidebar nav .contents ul ul ul {
   list-style-type: lower-greek;
 }
-/* line 100 */
+/* line 108 */
 #sidebar nav p, #sidebar nav ul {
   margin-top: 4px;
   margin-bottom: 4px;
 }
 
-/* line 104 */
+/* line 112 */
 #content {
   display: inline-block;
   vertical-align: top;
@@ -122,11 +132,11 @@ header #secretnav {
 #content a:hover {
   background-color: yellow;
 }
-/* line 109 */
+/* line 117 */
 #content .post-list {
   list-style: none outside none;
 }
-/* line 112 */
+/* line 120 */
 #content h2 {
   background-color: white;
   color: #3d3d3d;
@@ -141,7 +151,7 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 114 */
+/* line 122 */
 #content .category-list dt {
   font-size: 120%;
   margin: 0px 0px 0px 10px;
@@ -158,12 +168,12 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 115 */
+/* line 123 */
 #content .category-list dd {
   margin-left: none;
   padding-left: none;
 }
-/* line 117 */
+/* line 125 */
 #content hr {
   margin-top: 0px;
   margin-bottom: 30px;
@@ -172,12 +182,12 @@ header #secretnav {
   font-size: 25px;
   line-height: 10px;
 }
-/* line 124 */
+/* line 132 */
 #content hr:after {
   content: "- ∞ -";
   display: inline;
 }
-/* line 129 */
+/* line 137 */
 #content aside {
   padding: 10px;
   background-color: #f7f7f9;
@@ -186,7 +196,7 @@ header #secretnav {
   border-radius: 4px;
 }
 
-/* line 139 */
+/* line 147 */
 footer p {
   font-size: 80%;
   text-align: center;
