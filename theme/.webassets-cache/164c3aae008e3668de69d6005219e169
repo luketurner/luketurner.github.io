@@ -101,23 +101,15 @@ header #secretnav {
 }
 /* line 100 */
 #sidebar nav .contents ul {
-  list-style-type: upper-roman;
+  list-style-type: decimal;
 }
 /* line 102 */
-#sidebar nav .contents ul ul {
-  list-style-type: lower-latin;
-}
-/* line 104 */
-#sidebar nav .contents ul ul ul {
-  list-style-type: lower-greek;
-}
-/* line 108 */
 #sidebar nav p, #sidebar nav ul {
   margin-top: 4px;
   margin-bottom: 4px;
 }
 
-/* line 112 */
+/* line 106 */
 #content {
   display: inline-block;
   vertical-align: top;
@@ -132,11 +124,11 @@ header #secretnav {
 #content a:hover {
   background-color: yellow;
 }
-/* line 117 */
+/* line 111 */
 #content .post-list {
   list-style: none outside none;
 }
-/* line 120 */
+/* line 114 */
 #content h2 {
   background-color: white;
   color: #3d3d3d;
@@ -151,7 +143,7 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 122 */
+/* line 116 */
 #content .category-list dt {
   font-size: 120%;
   margin: 0px 0px 0px 10px;
@@ -168,12 +160,12 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 123 */
+/* line 117 */
 #content .category-list dd {
   margin-left: none;
   padding-left: none;
 }
-/* line 125 */
+/* line 119 */
 #content hr {
   margin-top: 0px;
   margin-bottom: 30px;
@@ -182,12 +174,12 @@ header #secretnav {
   font-size: 25px;
   line-height: 10px;
 }
-/* line 132 */
+/* line 126 */
 #content hr:after {
   content: "- ∞ -";
   display: inline;
 }
-/* line 137 */
+/* line 131 */
 #content aside {
   padding: 10px;
   background-color: #f7f7f9;
@@ -196,7 +188,7 @@ header #secretnav {
   border-radius: 4px;
 }
 
-/* line 147 */
+/* line 141 */
 footer p {
   font-size: 80%;
   text-align: center;
