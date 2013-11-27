@@ -6,20 +6,20 @@
   src: url("Calluna.ttf");
 }
 
-/* line 44 */
+/* line 45 */
 body {
   font-family: Calluna,Georgia,"Times New Roman",serif;
   color: #3d3d3d;
   font-size: 18px;
 }
 
-/* line 50 */
+/* line 51 */
 header {
   margin: 30px 50px;
   background-color: white;
   color: #3d3d3d;
 }
-/* line 52 */
+/* line 53 */
 header h1 {
   display: inline-block;
   vertical-align: top;
@@ -29,7 +29,7 @@ header h1 {
   margin-bottom: 0px;
   font-size: 27px;
 }
-/* line 60 */
+/* line 61 */
 header h2 {
   display: inline-block;
   vertical-align: top;
@@ -38,17 +38,17 @@ header h2 {
   line-height: 27px;
   margin: 0px;
 }
-/* line 22 */
+/* line 23 */
 header a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 25 */
+/* line 26 */
 header a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 68 */
+/* line 69 */
 header #expander {
   display: inline-block;
   vertical-align: top;
@@ -60,13 +60,13 @@ header #expander {
   width: 30px;
   color: white;
 }
-/* line 77 */
+/* line 78 */
 header #expander:hover {
   background-color: white;
   text-decoration: none;
   color: black;
 }
-/* line 83 */
+/* line 84 */
 header #secretnav {
   height: 24px;
   margin: 10px 20px 10px 20px;
@@ -75,7 +75,7 @@ header #secretnav {
   font-size: 24px;
 }
 
-/* line 92 */
+/* line 93 */
 #sidebar {
   display: inline-block;
   vertical-align: top;
@@ -83,89 +83,89 @@ header #secretnav {
   background-color: white;
   color: #3d3d3d;
 }
-/* line 22 */
+/* line 23 */
 #sidebar a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 25 */
+/* line 26 */
 #sidebar a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 99 */
+/* line 100 */
 #sidebar nav .contents .topic-title {
   font-weight: bold;
   font-size: 110%;
   text-align: center;
 }
-/* line 100 */
+/* line 101 */
 #sidebar nav .contents ul {
   list-style-type: decimal;
 }
-/* line 102 */
+/* line 103 */
 #sidebar nav p, #sidebar nav ul {
   margin-top: 4px;
   margin-bottom: 4px;
 }
 
-/* line 106 */
+/* line 107 */
 #content {
   display: inline-block;
   vertical-align: top;
   margin: 10px auto;
   max-width: 700px;
 }
-/* line 33 */
+/* line 34 */
 #content a {
   color: #3333cc;
 }
-/* line 35 */
+/* line 36 */
 #content a:hover {
   background-color: yellow;
 }
-/* line 111 */
+/* line 112 */
 #content .post-list {
   list-style: none outside none;
 }
-/* line 114 */
+/* line 115 */
 #content h2 {
   background-color: white;
   color: #3d3d3d;
 }
-/* line 22 */
+/* line 23 */
 #content h2 a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 25 */
+/* line 26 */
 #content h2 a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 116 */
+/* line 117 */
 #content .category-list dt {
   font-size: 120%;
   margin: 0px 0px 0px 10px;
   background-color: white;
   color: #3d3d3d;
 }
-/* line 22 */
+/* line 23 */
 #content .category-list dt a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 25 */
+/* line 26 */
 #content .category-list dt a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 117 */
+/* line 118 */
 #content .category-list dd {
   margin-left: none;
   padding-left: none;
 }
-/* line 119 */
+/* line 120 */
 #content hr {
   margin-top: 0px;
   margin-bottom: 30px;
@@ -174,12 +174,12 @@ header #secretnav {
   font-size: 25px;
   line-height: 10px;
 }
-/* line 126 */
+/* line 127 */
 #content hr:after {
   content: "- ∞ -";
   display: inline;
 }
-/* line 131 */
+/* line 132 */
 #content aside {
   padding: 10px;
   background-color: #f7f7f9;
@@ -187,8 +187,13 @@ header #secretnav {
   border: 1px solid #e1e1e8;
   border-radius: 4px;
 }
+/* line 139 */
+#content code, #content pre {
+  font-family: "Consolas", "Monaco", monospace;
+  font-size: 14.4px;
+}
 
-/* line 141 */
+/* line 146 */
 footer p {
   font-size: 80%;
   text-align: center;

@@ -7,7 +7,7 @@
 	<title>Write Yourself a&nbsp;Scheme - Luke Turner</title>
 	<meta name="author" content="Luke Turner">
 	
-		<link href="/theme/css/style.min.css?42d19996" rel="stylesheet" >
+		<link href="/theme/css/style.min.css?2309fba5" rel="stylesheet" >
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 		<script src="/theme/js/base.min.js?07bbe624" type="text/javascript"></script>
@@ -85,6 +85,7 @@
 <h2><a class="toc-backref" href="#id10">About</a></h2>
 <p>Write Yourself a Scheme is an ebook available in a few places on the Web, including as a <a class="reference external" href="https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours">wikibook</a>, which walks you through writing a Scheme interpreter in Haskell.</p>
 <p>The following are notes and solutions to the exercises, written as I progress through the book. Note that I am a Haskell noob (I’ve started this book immediately after reading <a class="reference external" href="https://www.fpcomplete.com/school/starting-with-haskell/haskell-fast-hard">Learn Haskell Fast and Hard</a>), so the solutions are not necessarily idiomatic, efficient, or even correct for all edge cases. However, they may serve as good launching points or samples for other noobs. Of course, I won’t post anything that straight-up doesn’t work for typical usage, and if I recognize a potential edge case failure with the code, I’ll be sure to mention it.</p>
+<p>Also note that there are user-contributed answers posted in an <a class="reference external" href="http://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours/Answers">appendix</a> to the wikibook edition. Those answers may be better or more correct than mine — or they may not be. I haven’t actually looked at them; that would be cheating.</p>
 <p>This post is currently a heavy work in progress. I will update it as I progress through the book. Typically I do an exercise every week — nothing like waking up and diving into some functional programming to get your brain running on the weekend.</p>
 </div>
 <div class="section" id="exercise-notes">
@@ -349,6 +350,7 @@ in <code>eval</code>:</p>
 </div>
 <div class="section" id="id8">
 <h4><a class="toc-backref" href="#id30">Exercise 3</a></h4>
+<p>This exercise is a little interesting, because <code>cond</code> and <code>case</code> are normally not Scheme primitives — they are derived from <code>if</code> using macros. But, it’s good practice, so let’s go with implementing them as primitives in Haskell. Also, we don’t have macros.</p>
 <p>Beginning with <code>cond</code>. I initially implemented <code>cond</code> using a list comprehension, but had trouble throwing errors if, for instance, the statement fell through. That implementation is:</p>
 <div class="highlight"><pre><span class="c1">-- This works, but invalid syntax doesn't throw errors.</span>
 <span class="nf">cond</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">LispVal</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">ThrowsError</span> <span class="kt">LispVal</span>
@@ -375,21 +377,23 @@ in <code>eval</code>:</p>
 </pre></div>
 <p>Next up is <code>case</code>. we followed the same basic pattern here that we did for <code>cond</code>, since the two are similar in many ways. However, since <code>case</code> is a Haskell keyword, we name the function <code>casef</code>. Also, since the first argument to the function is special — semantically different from the following arguments — we have to wrap the recursive function in a helper. In this case the recursive function is called <code>casef'</code>.</p>
 <p>Additionally, we define a fun little converter <code>boolEqv</code>, which basically calls <code>eqv</code> on its two arguments and transforms the result into a boolean. This kind of function, which is basically just there to convert values between types, seems a lot more necessary in Haskell than in the dynamic languages I’m used to (i.e. Python). On one hand, it’s a pain to have to explicitly describe the type transformations, especially when monads are involved. On the other hand, I seem to be getting better and better at doing it quickly, and once you have the conversion explicitly defined, it helps to make sure that things "just work" by forcing you to explicitly describe behavior in error cases. For instance, here if <code>eqv</code> returns an error, that is transformed into simply a False so that particular case falls through every time. Is that ideal? No, but it comes with the use of <code>any</code>. I think.</p>
+<p>As a result, problem: Invalid expressions as <code>case</code> keys throw <code>case statement fell through</code> errors, not more useful errors.</p>
 <div class="highlight"><pre><span class="nf">casef</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">LispVal</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">ThrowsError</span> <span class="kt">LispVal</span>
 <span class="nf">casef</span> <span class="p">(</span><span class="n">key</span><span class="kt">:</span><span class="n">clauses</span><span class="p">)</span> <span class="ow">=</span> <span class="n">casef'</span> <span class="n">clauses</span>
     <span class="kr">where</span>
-        <span class="n">casef'</span> <span class="p">((</span><span class="kt">List</span> <span class="p">(</span><span class="n">testVals</span><span class="kt">:</span><span class="n">exprs</span><span class="p">))</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">case</span> <span class="n">caseEval</span> <span class="n">testVals</span> <span class="n">key</span> <span class="kr">of</span>
+        <span class="n">casef'</span> <span class="p">((</span><span class="kt">List</span> <span class="p">(</span><span class="n">testVals</span><span class="kt">:</span><span class="n">exprs</span><span class="p">))</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">case</span> <span class="n">caseEval</span> <span class="n">testVals</span> <span class="p">(</span><span class="n">eval</span> <span class="n">key</span><span class="p">)</span> <span class="kr">of</span>
             <span class="kt">Right</span> <span class="p">(</span><span class="kt">Bool</span> <span class="kt">True</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">last</span> <span class="p">[</span><span class="n">eval</span> <span class="n">x</span> <span class="o">|</span> <span class="n">x</span> <span class="ow">&lt;-</span> <span class="n">exprs</span><span class="p">]</span>
             <span class="n">otherwise</span> <span class="ow">-&gt;</span> <span class="n">casef'</span> <span class="n">xs</span>
         <span class="n">casef'</span> <span class="kt">[]</span> <span class="ow">=</span> <span class="n">throwError</span> <span class="o">$</span> <span class="kt">Default</span> <span class="s">"case statement fell through"</span>
         <span class="n">casef'</span> <span class="n">bad</span> <span class="ow">=</span> <span class="n">throwError</span> <span class="o">$</span> <span class="kt">Default</span> <span class="s">"Invalid syntax in 'case' statement"</span>
 <span class="nf">casef</span> <span class="n">bad</span> <span class="ow">=</span> <span class="n">throwError</span> <span class="o">$</span> <span class="kt">Default</span> <span class="s">"Invalid syntax in 'case' statement"</span>
 
-<span class="nf">caseEval</span> <span class="ow">::</span> <span class="kt">LispVal</span> <span class="ow">-&gt;</span> <span class="kt">LispVal</span> <span class="ow">-&gt;</span> <span class="kt">ThrowsError</span> <span class="kt">LispVal</span>
+<span class="nf">caseEval</span> <span class="ow">::</span> <span class="kt">LispVal</span> <span class="ow">-&gt;</span> <span class="kt">ThrowsError</span> <span class="kt">LispVal</span> <span class="ow">-&gt;</span> <span class="kt">ThrowsError</span> <span class="kt">LispVal</span>
 <span class="nf">caseEval</span> <span class="p">(</span><span class="kt">Atom</span> <span class="s">"else"</span><span class="p">)</span> <span class="kr">_</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">Bool</span> <span class="kt">True</span>
 <span class="nf">caseEval</span> <span class="p">(</span><span class="kt">List</span> <span class="n">tests</span><span class="p">)</span> <span class="n">key</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">Bool</span> <span class="o">$</span> <span class="n">any</span> <span class="p">(</span><span class="n">boolEqv</span> <span class="n">key</span><span class="p">)</span> <span class="n">tests</span>
-    <span class="kr">where</span> <span class="n">boolEqv</span> <span class="ow">::</span> <span class="kt">LispVal</span> <span class="ow">-&gt;</span> <span class="kt">LispVal</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
-          <span class="n">boolEqv</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="n">either</span> <span class="p">(</span><span class="nf">\</span><span class="kr">_</span> <span class="ow">-&gt;</span> <span class="kt">False</span><span class="p">)</span> <span class="n">extractBool</span> <span class="p">(</span><span class="n">eqv</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+    <span class="kr">where</span> <span class="n">boolEqv</span> <span class="ow">::</span> <span class="kt">ThrowsError</span> <span class="kt">LispVal</span> <span class="ow">-&gt;</span> <span class="kt">LispVal</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
+          <span class="n">boolEqv</span> <span class="p">(</span><span class="kt">Right</span> <span class="n">a</span><span class="p">)</span> <span class="n">b</span> <span class="ow">=</span> <span class="n">either</span> <span class="p">(</span><span class="nf">\</span><span class="kr">_</span> <span class="ow">-&gt;</span> <span class="kt">False</span><span class="p">)</span> <span class="n">extractBool</span> <span class="p">(</span><span class="n">eqv</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+          <span class="n">boolEqv</span> <span class="p">(</span><span class="kt">Left</span> <span class="n">a</span><span class="p">)</span> <span class="kr">_</span> <span class="ow">=</span> <span class="kt">False</span>
           <span class="n">extractBool</span> <span class="p">(</span><span class="kt">Bool</span> <span class="n">b</span><span class="p">)</span> <span class="ow">=</span> <span class="n">b</span>
 </pre></div>
 <p>In this exercise, we need to add the following patterns to <code>eval</code>, before the general primitive evaluator (because these primitives use special syntax):</p>
@@ -405,7 +409,20 @@ in <code>eval</code>:</p>
 </div>
 <div class="section" id="id9">
 <h4><a class="toc-backref" href="#id31">Exercise 4</a></h4>
-<p>Haven’t done it.</p>
+<p>Of the string functions, we already implemented <code>string?</code>, and the string comparison operators (<code>string&lt;?</code>, <code>string=?</code>, etc.). Remaining are case-insensitive comparison operators (<code>string-ci&lt;?</code>, <code>string-ci=?</code>, etc.), <code>make-string</code>, <code>string</code>, <code>string-length</code>, <code>string-ref</code>, <code>string-set!</code>, <code>substring</code>, <code>string-append</code>, <code>string-&gt;list</code>, <code>list-&gt;string</code>, <code>string-copy</code>, and <code>string-fill!</code>. Dear Lord.</p>
+<p>Let’s start with the case-insensitive comparison predicates, since they should be easy. We can leverage all the work done for the case-sensitive predicates, and just apply an intermediate function that downcases everything. In the interest of being Haskellish, I wrote it in a points-free style. Basically it unpacks the string, then lifts the Either monad off the list and maps the <code>toLower</code> function onto all the characters. Because the monad is only "lifted", not otherwise removed, we don’t need to re-add it with a <code>return</code> or anything.</p>
+<div class="highlight"><pre><span class="nf">unpackStrCI</span> <span class="ow">::</span> <span class="kt">LispVal</span> <span class="ow">-&gt;</span> <span class="kt">ThrowsError</span> <span class="kt">String</span>
+<span class="nf">unpackStrCI</span> <span class="ow">=</span> <span class="p">(</span><span class="n">liftM</span> <span class="o">$</span> <span class="n">map</span> <span class="n">toLower</span><span class="p">)</span> <span class="o">.</span> <span class="n">unpackStr</span>
+</pre></div>
+<p>Then we can define the predicates using this new function:</p>
+<div class="highlight"><pre><span class="nf">primitives</span> <span class="ow">=</span> <span class="p">[</span> <span class="o">...</span>
+              <span class="p">(</span><span class="s">"string-ci=?"</span><span class="p">,</span> <span class="n">strBoolBinopCI</span> <span class="p">(</span><span class="o">==</span><span class="p">)),</span>
+              <span class="p">(</span><span class="s">"string-ci&gt;?"</span><span class="p">,</span> <span class="n">strBoolBinopCI</span> <span class="p">(</span><span class="o">&gt;</span><span class="p">)),</span>
+              <span class="p">(</span><span class="s">"string-ci&lt;?"</span><span class="p">,</span> <span class="n">strBoolBinopCI</span> <span class="p">(</span><span class="o">&lt;</span><span class="p">)),</span>
+              <span class="p">(</span><span class="s">"string-ci&lt;=?"</span><span class="p">,</span> <span class="n">strBoolBinopCI</span> <span class="p">(</span><span class="o">&lt;=</span><span class="p">)),</span>
+              <span class="p">(</span><span class="s">"string-ci&gt;=?"</span><span class="p">,</span> <span class="n">strBoolBinopCI</span> <span class="p">(</span><span class="o">&gt;=</span><span class="p">)),</span>
+              <span class="o">...</span> <span class="p">]</span>
+</pre></div>
 </div>
 </div>
 </div>
