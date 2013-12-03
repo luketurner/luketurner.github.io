@@ -192,8 +192,19 @@ header #secretnav {
   font-family: "Consolas", "Monaco", monospace;
   font-size: 14.4px;
 }
+/* line 143 */
+#content table {
+  border: none;
+  border-collapse: collapse;
+  width: 500px;
+}
+/* line 147 */
+#content table * {
+  border: none;
+  border-bottom: 1px solid grey;
+}
 
-/* line 146 */
+/* line 155 */
 footer p {
   font-size: 80%;
   text-align: center;
