@@ -93,42 +93,74 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 100 */
+/* line 99 */
 #sidebar nav .contents .topic-title {
   font-weight: bold;
   font-size: 110%;
   text-align: center;
 }
-/* line 101 */
+/* line 100 */
 #sidebar nav .contents ul {
   list-style-type: decimal;
 }
-/* line 103 */
+/* line 102 */
 #sidebar nav p, #sidebar nav ul {
   margin-top: 4px;
   margin-bottom: 4px;
 }
 
-/* line 107 */
-#content {
+/* line 105 */
+#content-container {
   display: inline-block;
   vertical-align: top;
   margin: 10px auto;
-  max-width: 700px;
+  max-width: 1000px;
 }
 /* line 34 */
-#content a {
+#content-container a {
   color: #3333cc;
 }
 /* line 36 */
-#content a:hover {
+#content-container a:hover {
+  background-color: yellow;
+}
+/* line 109 */
+#content-container .category-list {
+  display: inline-block;
+  vertical-align: top;
+}
+/* line 111 */
+#content-container .category-list dt {
+  font-size: 120%;
+  margin: 0px 0px 0px 10px;
+  background-color: white;
+  color: #3d3d3d;
+}
+/* line 23 */
+#content-container .category-list dt a {
+  color: #3d3d3d;
+  text-decoration: none;
+}
+/* line 26 */
+#content-container .category-list dt a:hover {
+  text-decoration: underline;
   background-color: yellow;
 }
 /* line 112 */
-#content .post-list {
+#content-container .category-list dd {
+  margin-left: none;
+  padding-left: none;
+}
+/* line 114 */
+#content-container .post-list {
   list-style: none outside none;
 }
-/* line 115 */
+
+/* line 119 */
+#content {
+  max-width: 700px;
+}
+/* line 121 */
 #content h2 {
   background-color: white;
   color: #3d3d3d;
@@ -143,29 +175,7 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 117 */
-#content .category-list dt {
-  font-size: 120%;
-  margin: 0px 0px 0px 10px;
-  background-color: white;
-  color: #3d3d3d;
-}
-/* line 23 */
-#content .category-list dt a {
-  color: #3d3d3d;
-  text-decoration: none;
-}
-/* line 26 */
-#content .category-list dt a:hover {
-  text-decoration: underline;
-  background-color: yellow;
-}
-/* line 118 */
-#content .category-list dd {
-  margin-left: none;
-  padding-left: none;
-}
-/* line 120 */
+/* line 122 */
 #content hr {
   margin-top: 0px;
   margin-bottom: 30px;
@@ -174,12 +184,12 @@ header #secretnav {
   font-size: 25px;
   line-height: 10px;
 }
-/* line 127 */
+/* line 129 */
 #content hr:after {
   content: "- ∞ -";
   display: inline;
 }
-/* line 132 */
+/* line 134 */
 #content aside {
   padding: 10px;
   background-color: #f7f7f9;
@@ -187,24 +197,24 @@ header #secretnav {
   border: 1px solid #e1e1e8;
   border-radius: 4px;
 }
-/* line 139 */
+/* line 141 */
 #content code, #content pre {
   font-family: "Consolas", "Monaco", monospace;
   font-size: 14.4px;
 }
-/* line 143 */
+/* line 145 */
 #content table {
   border: none;
   border-collapse: collapse;
   width: 500px;
 }
-/* line 147 */
+/* line 149 */
 #content table * {
   border: none;
   border-bottom: 1px solid grey;
 }
 
-/* line 155 */
+/* line 157 */
 footer p {
   font-size: 80%;
   text-align: center;
