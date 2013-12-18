@@ -213,8 +213,12 @@ header #secretnav {
   border: none;
   border-bottom: 1px solid grey;
 }
+/* line 155 */
+#content .footnote * {
+  border: none;
+}
 
-/* line 157 */
+/* line 159 */
 footer p {
   font-size: 80%;
   text-align: center;

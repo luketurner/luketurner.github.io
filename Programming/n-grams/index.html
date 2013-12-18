@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+		
+	<meta charset="utf-8">
+	<title>n-grams - Luke Turner</title>
+	<meta name="author" content="Luke Turner">
+	
+		<link href="/theme/css/style.min.css?9fc8f61f" rel="stylesheet" >
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<script src="/theme/js/base.min.js?07bbe624" type="text/javascript"></script>
+
+
+
+
+
+		
+    <script type= "text/javascript">
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = 'https:' == document.location.protocol ? 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js' : 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'; 
+        s[(window.opera ? "innerHTML" : "text")] =
+            "MathJax.Hub.Config({" + 
+            "    config: ['MMLorHTML.js']," + 
+            "    jax: ['input/TeX','input/MathML','output/HTML-CSS','output/NativeMML']," +
+            "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," + 
+            "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+            "    tex2jax: { " +
+            "        inlineMath: [ ['$','$'] ], " +
+            "        displayMath: [ ['$$','$$'] ]," +
+            "        processEscapes: true }, " +
+            "    'HTML-CSS': { " +
+            "        styles: { '.MathJax .mo, .MathJax .mi': {color: 'black ! important'}} " +
+            "    } " +
+            "}); ";
+        (document.body || document.getElementsByTagName('head')[0]).appendChild(s);
+    </script>
+
+</head>
+<body>
+	<div id="wrapper">
+		<header>
+			<h1><a href="/">Luke Turner</a></h1>
+            <h2>&mdash; Vēnī, vīdī, cōgitāvī</h2>
+
+		</header>
+		<div id="sidebar">
+
+	<nav>
+		<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#preparing-the-corpus" id="id3">Preparing The Corpus</a></li>
+<li><a class="reference internal" href="#coding-the-model" id="id4">Coding the Model</a></li>
+<li><a class="reference internal" href="#sentence-generation" id="id5">Sentence Generation</a></li>
+<li><a class="reference internal" href="#sample-executions" id="id6">Sample Executions</a></li>
+</ul>
+</div>
+	</nav>
+	
+	        
+
+
+		</div>
+
+        <div id="content-container">
+            <div id="content">
+<section id="content" class="body">
+		<h2>
+			<a href="/Programming/n-grams" rel="bookmark" title="Permalink to n-grams">
+				n-grams
+			</a>
+		</h2>
+	<div class="entry-content">
+		
+<div class="section" id="preparing-the-corpus">
+<h2><a class="toc-backref" href="#id3">Preparing The Corpus</a></h2>
+<p>Before we can feed the corpus text into our model, we need to tokenize it to ensure that each word is represented consistently in the text. For instance, "Ago" and "ago" and "ago." would be treated as different tokens by our model.  Instead, we want each of them to be represented as "<span class="caps">AGO</span>", and the punctuation can also be made into separate tokens (e.g. <code>[COMMA]</code>).</p>
+<p>Since this is meant to be simple, we won’t use a full-power tokenizer. Instead, we can implement our own as a table of <code>[regex, replacement]</code> pairs, and then apply each regex in turn to the text. There are many different techniques or conventions people use in tokenization of natural language. I’ve illustrated a few in the code below, which defines some basic regexes, applies them to the text, and then splits the result into a list of tokens instead of a long string.</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span>
+                 <span class="p">[</span><span class="s">"[-</span><span class="se">\n</span><span class="s">]"</span><span class="p">,</span>                  <span class="s">" "</span><span class="p">]</span> <span class="c"># Hyphens to whitespace</span>
+                <span class="p">,[</span><span class="s">r'[][(){}#$%"]'</span><span class="p">,</span>          <span class="s">""</span><span class="p">]</span> <span class="c"># Strip unwanted characters</span>
+                <span class="p">,[</span><span class="s">r'\s([./-]?\d+)+[./-]?\s'</span><span class="p">,</span><span class="s">" [<span class="caps">NUMBER</span>] "</span><span class="p">]</span> <span class="c"># Standardize numbers</span>
+                <span class="p">,[</span><span class="s">r'\.{3,}'</span><span class="p">,</span>                <span class="s">" [<span class="caps">ELLIPSIS</span>] "</span><span class="p">]</span> <span class="c"># Tokenize ellipses</span>
+                <span class="p">,[</span><span class="s">r','</span><span class="p">,</span>                     <span class="s">" [<span class="caps">COMMA</span>] "</span><span class="p">]</span> <span class="c"># Tokenize commas</span>
+                <span class="p">,[</span><span class="s">r';'</span><span class="p">,</span>                     <span class="s">" [<span class="caps">SEMICOLON</span>] "</span><span class="p">]</span> <span class="c"># Tokenize semicolons</span>
+                <span class="p">,[</span><span class="s">r':'</span><span class="p">,</span>                     <span class="s">" [<span class="caps">COLON</span>] "</span><span class="p">]</span> <span class="c"># Tokenize colons</span>
+                <span class="p">,[</span><span class="s">r'[.!?]'</span><span class="p">,</span>                 <span class="s">" [<span class="caps">SENTENCE</span>-<span class="caps">BREAK</span>] "</span><span class="p">]</span> <span class="c"># Tokenize end-sentence punctuation</span>
+        <span class="p">]</span>
+        <span class="nb">apply</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">ws</span><span class="p">,</span><span class="n">tok</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">tok</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tok</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ws</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">reduce</span><span class="p">(</span><span class="nb">apply</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">ws</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)</span> <span class="k">if</span> <span class="n">w</span> <span class="o">!=</span> <span class="s">''</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">tokens</span> <span class="o">+</span> <span class="p">[</span><span class="s">"[<span class="caps">SENTENCE</span>-<span class="caps">BREAK</span>]"</span><span class="p">]</span>
+</pre></div>
+<p>Note: We add a <code>[SENTENCE-BREAK]</code> token to the end of the corpus. This is because unless the corpus ends in an <code>[SENTENCE-BREAK]</code>, our sentence generator could just walk off the edge of the list.</p>
+</div>
+<div class="section" id="coding-the-model">
+<h2><a class="toc-backref" href="#id4">Coding the Model</a></h2>
+<p>Implementing the n-gram model in Python can be very straightforward. Here, I use the <code>collections.defaultdict</code> module. In a normal python <code>dict</code> object, trying to access a key with no stored value will raise a <code>KeyError</code>. In a defaultdict, no error is raised; instead, that key has its value initialized automatically. Our model is a nested dictionary, so the values of the outer dictionary are initialized to <code>defaultdict(int)</code>.</p>
+<p>The keys of the outer dictionary are the priors, a tuple of length $n-1$ in an $n$-gram model. The keys of the inner dictionary are single words, and their values are frequencies: $F(\text{word}|\text{prior})$. Note that we don’t have to convert them into probabilities $P(\text{word}|\text{prior})$, because the $F \rightarrow P$ conversion doesn’t alter the proportions of the data (it’s just normalization).</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+        <span class="n">prior_n</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span> <span class="c"># n-1 words in the prior tuple</span>
+        <span class="n">freq_dist</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">defaultdict</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="c"># keep it callable</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">freq_dist</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">prior_n</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)):</span>
+                <span class="n">prior</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="n">prior_n</span><span class="p">:</span><span class="n">index</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s">"[<span class="caps">SENTENCE</span>-<span class="caps">BREAK</span>]"</span> <span class="ow">in</span> <span class="n">prior</span><span class="p">:</span>
+                        <span class="c"># Discard unneeded context</span>
+                        <span class="n">prior</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">dropwhile</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">!=</span> <span class="s">"[<span class="caps">SENTENCE</span>-<span class="caps">BREAK</span>]"</span><span class="p">,</span> <span class="n">prior</span><span class="p">)</span>
+                <span class="c"># Note: tuples are hashable</span>
+                <span class="n">model</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">prior</span><span class="p">)][</span><span class="n">words</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+<p>There is something interesting here. Because we’re only interested in the context within a sentence, if we have a prior like <code>("AGAIN", "[SENTENCE-BREAK]")</code>, the <code>AGAIN</code> doesn’t add interesting context. For instance, no matter the $n$ used, the only context we can have for the first word is $F(\text{word}|\text{[sentence-start]})$ <a class="footnote-reference" href="#id2" id="id1">[*]</a>. So, we can build those lower-context priors directly into the model.</p>
+</div>
+<div class="section" id="sentence-generation">
+<h2><a class="toc-backref" href="#id5">Sentence Generation</a></h2>
+<p>In order to generate a sentence we need a selector function that can pick the next word, given an $(n-1)$-word prior, using the data in the model. There are different ways you could have it pick. The most true-to-math is probably a weighted random selection over the frequency distribution of the prior. However, a lazy option is to just pick the words with the highest frequency. Here are basic implementations of both:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">max_selector</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">words</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">dist_selector</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">words</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
+</pre></div>
+<p>Note that <code>dist_selector</code> performs a weighted random choice by adding each potential word to a list $F(\text{word}|\text{prior})$ times, so that the total length of the list is $F(\text{prior})$ . Then it makes a random choice from that list.</p>
+<p>Finally, in order to drive the process, we need a <code>generate_sentence</code> function.</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">generate_sentence</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="n">sentence</span> <span class="o">=</span> <span class="p">[</span><span class="s">"[<span class="caps">SENTENCE</span>-<span class="caps">BREAK</span>]"</span><span class="p">]</span>
+        <span class="n">next_word</span> <span class="o">=</span> <span class="s">""</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">max_length</span><span class="p">:</span>
+                <span class="n">prior</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sentence</span><span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">n</span><span class="p">:])</span>
+                <span class="n">next_word</span> <span class="o">=</span> <span class="n">selector</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="n">prior</span><span class="p">])</span>
+                <span class="n">sentence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_word</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">next_word</span> <span class="o">==</span> <span class="s">"[<span class="caps">SENTENCE</span>-<span class="caps">BREAK</span>]"</span><span class="p">:</span> <span class="k">break</span> <span class="c"># Sentence is over.</span>
+        <span class="k">return</span> <span class="s">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="sample-executions">
+<h2><a class="toc-backref" href="#id6">Sample Executions</a></h2>
+<p>Now, we can generate some sentences. This driver produces a sampler of sentences from every work in the Gutenberg collection. The sentence preceded with <code>(max)</code> uses <code>max_selector</code>. The other 5 use <code>dist_selector</code>, which is typically more effective.</p>
+<p>The output of an execution is quite long, so I’ve stored it in a separate file <a class="reference external" href="/static/ngram-output.txt">here</a>. Notice how the sentences generated with <code>max_selector</code> often produce infinite loops or other undesirable behavior.</p>
+<p>Here is the driving code:</p>
+<div class="highlight"><pre><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"output.txt"</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">'gutenberg'</span><span class="p">):</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="s">"="</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">fname</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+                <span class="n">tokenized_text</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">getenburg</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span>
+                        <span class="n">model</span> <span class="o">=</span> <span class="n">make_model</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">tokenized_text</span><span class="p">)</span>
+                        <span class="k">print</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s">"-<span class="caps">GRAM</span>"</span><span class="p">,</span> <span class="s">"-"</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s">"(max) "</span> <span class="o">+</span> <span class="n">generate_sentence</span><span class="p">(</span><span class="n">max_selector</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="nb">file</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+                                <span class="k">print</span><span class="p">(</span><span class="s">" "</span> <span class="o">*</span> <span class="mi">6</span> <span class="o">+</span> <span class="n">generate_sentence</span><span class="p">(</span><span class="n">dist_selector</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="nb">file</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+</pre></div>
+<p>Well, that’s all, folks. The n-gram model is short and simple but oh so sweet. Stay tuned in the future for its older brother, the Hidden Markov Model, in Python.</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label"></col><col></col></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[*]</a></td><td>I noticed that MathJAX does some strange detection for equations. See: $F(\text{word}|\text{[sentence-start]})$ versus $F(\text{word}|\text{[<span class="caps">SENTENCE</span>-<span class="caps">START</span>]})$</td></tr>
+</tbody>
+</table>
+</div>
+
+	</div><!-- /.entry-content -->
+</section>
+            </div>
+        </div>
+
+		<footer>
+			<p>Copyright Luke Turner 2013</p>
+		</footer>
+	</div>
+</body>
+</html>
