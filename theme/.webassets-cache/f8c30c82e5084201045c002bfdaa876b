@@ -1,54 +1,77 @@
 @charset "UTF-8";
 @import url(syntax.css);
 @font-face {
-  font-family: "Calluna";
-  src: url("Calluna.woff");
-  src: url("Calluna.ttf");
+  font-family: "Junicode";
+  src: local("Junicode");
+  src: url("Junicode.ttf");
 }
 
-/* line 45 */
+@font-face {
+  font-family: "Junicode";
+  src: local("Junicode Bold");
+  src: url("Junicode-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Junicode";
+  src: local("Junicode Italic");
+  src: url("Junicode-Italic.ttf");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Junicode";
+  src: local("Junicode Bold Italic");
+  src: url("Junicode-BoldItalic.ttf");
+  font-style: italic;
+  font-weight: bold;
+}
+
+/* line 67 */
 body {
-  font-family: Calluna,Georgia,"Times New Roman",serif;
+  font-family: Junicode,Georgia,"Times New Roman",serif;
   color: #3d3d3d;
-  font-size: 18px;
+  font-size: 19px;
+  line-height: 28.5px;
 }
 
-/* line 51 */
+/* line 74 */
 header {
   margin: 30px 50px;
   background-color: white;
   color: #3d3d3d;
 }
-/* line 53 */
+/* line 76 */
 header h1 {
   display: inline-block;
   vertical-align: top;
   font-weight: 100;
-  line-height: 27px;
+  line-height: 28.5px;
   margin-top: 0px;
   margin-bottom: 0px;
-  font-size: 27px;
+  font-size: 28.5px;
 }
-/* line 61 */
+/* line 84 */
 header h2 {
   display: inline-block;
   vertical-align: top;
   font-weight: 100;
-  font-size: 18px;
-  line-height: 27px;
+  font-size: 19px;
+  line-height: 28.5px;
   margin: 0px;
 }
-/* line 23 */
+/* line 45 */
 header a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 26 */
+/* line 48 */
 header a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 69 */
+/* line 92 */
 header #expander {
   display: inline-block;
   vertical-align: top;
@@ -60,13 +83,13 @@ header #expander {
   width: 30px;
   color: white;
 }
-/* line 78 */
+/* line 101 */
 header #expander:hover {
   background-color: white;
   text-decoration: none;
   color: black;
 }
-/* line 84 */
+/* line 107 */
 header #secretnav {
   height: 24px;
   margin: 10px 20px 10px 20px;
@@ -75,7 +98,7 @@ header #secretnav {
   font-size: 24px;
 }
 
-/* line 93 */
+/* line 116 */
 #sidebar {
   display: inline-block;
   vertical-align: top;
@@ -83,100 +106,128 @@ header #secretnav {
   background-color: white;
   color: #3d3d3d;
 }
-/* line 23 */
+/* line 45 */
 #sidebar a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 26 */
+/* line 48 */
 #sidebar a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 99 */
+/* line 120 */
+#sidebar nav {
+  margin-top: 15px;
+}
+/* line 123 */
 #sidebar nav .contents .topic-title {
   font-weight: bold;
   font-size: 110%;
   text-align: center;
 }
-/* line 100 */
+/* line 124 */
 #sidebar nav .contents ul {
   list-style-type: decimal;
 }
-/* line 102 */
+/* line 126 */
 #sidebar nav p, #sidebar nav ul {
   margin-top: 4px;
   margin-bottom: 4px;
 }
+/* line 128 */
+#sidebar h2 {
+  font-size: 22.8px;
+  margin-top: 29px;
+  margin-bottom: 0px;
+}
+/* line 133 */
+#sidebar h3 {
+  font-size: 20.9px;
+  margin-bottom: 0px;
+  margin-top: 20px;
+}
+/* line 138 */
+#sidebar p, #sidebar dl {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+/* line 142 */
+#sidebar .date {
+  margin: none;
+  font-size: 15.2px;
+  font-style: italic;
+  line-height: 19px;
+}
 
-/* line 105 */
+/* line 149 */
 #content-container {
   display: inline-block;
   vertical-align: top;
-  margin: 10px auto;
+  margin: 0px auto;
   max-width: 1000px;
 }
-/* line 34 */
+/* line 56 */
 #content-container a {
   color: #3333cc;
 }
-/* line 36 */
+/* line 58 */
 #content-container a:hover {
   background-color: yellow;
 }
-/* line 109 */
+/* line 153 */
 #content-container .category-list {
   display: inline-block;
   vertical-align: top;
 }
-/* line 111 */
+/* line 155 */
 #content-container .category-list dt {
   font-size: 120%;
   margin: 0px 0px 0px 10px;
   background-color: white;
   color: #3d3d3d;
 }
-/* line 23 */
+/* line 45 */
 #content-container .category-list dt a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 26 */
+/* line 48 */
 #content-container .category-list dt a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 112 */
+/* line 156 */
 #content-container .category-list dd {
   margin-left: none;
   padding-left: none;
 }
-/* line 114 */
+/* line 158 */
 #content-container .post-list {
   list-style: none outside none;
 }
 
-/* line 119 */
-#content {
+/* line 163 */
+#content-inner {
   max-width: 700px;
 }
-/* line 121 */
-#content h2 {
+/* line 165 */
+#content-inner h2 {
   background-color: white;
   color: #3d3d3d;
 }
-/* line 23 */
-#content h2 a {
+/* line 45 */
+#content-inner h2 a {
   color: #3d3d3d;
   text-decoration: none;
 }
-/* line 26 */
-#content h2 a:hover {
+/* line 48 */
+#content-inner h2 a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 122 */
-#content hr {
+/* line 166 */
+#content-inner hr {
   margin-top: 0px;
   margin-bottom: 30px;
   text-align: center;
@@ -184,41 +235,37 @@ header #secretnav {
   font-size: 25px;
   line-height: 10px;
 }
-/* line 129 */
-#content hr:after {
+/* line 173 */
+#content-inner hr:after {
   content: "- ∞ -";
   display: inline;
 }
-/* line 134 */
-#content aside {
+/* line 178 */
+#content-inner aside {
   padding: 10px;
   background-color: #f7f7f9;
   color: inherit;
   border: 1px solid #e1e1e8;
   border-radius: 4px;
 }
-/* line 141 */
-#content code, #content pre {
+/* line 185 */
+#content-inner code, #content-inner pre {
   font-family: "Consolas", "Monaco", monospace;
-  font-size: 14.4px;
+  font-size: 15.2px;
 }
-/* line 145 */
-#content table {
+/* line 189 */
+#content-inner table {
   border: none;
   border-collapse: collapse;
   width: 500px;
 }
-/* line 149 */
-#content table * {
+/* line 193 */
+#content-inner table * {
   border: none;
   border-bottom: 1px solid grey;
 }
-/* line 155 */
-#content .footnote * {
-  border: none;
-}
 
-/* line 159 */
+/* line 201 */
 footer p {
   font-size: 80%;
   text-align: center;

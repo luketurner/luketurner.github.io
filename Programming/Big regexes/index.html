@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+		
+	<meta charset="utf-8">
+	<title>Big&nbsp;regexes - Luke Turner</title>
+	<meta name="author" content="Luke Turner">
+	
+		<link href="/theme/css/style.min.css?e78f7ca8" rel="stylesheet" >
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<script src="/theme/js/base.min.js?07bbe624" type="text/javascript"></script>
+
+
+
+
+
+		
+    <script type= "text/javascript">
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = 'https:' == document.location.protocol ? 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js' : 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'; 
+        s[(window.opera ? "innerHTML" : "text")] =
+            "MathJax.Hub.Config({" + 
+            "    config: ['MMLorHTML.js']," + 
+            "    jax: ['input/TeX','input/MathML','output/HTML-CSS','output/NativeMML']," +
+            "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," + 
+            "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+            "    tex2jax: { " +
+            "        inlineMath: [ ['$','$'] ], " +
+            "        displayMath: [ ['$$','$$'] ]," +
+            "        processEscapes: true }, " +
+            "    'HTML-CSS': { " +
+            "        styles: { '.MathJax .mo, .MathJax .mi': {color: 'black ! important'}} " +
+            "    } " +
+            "}); ";
+        (document.body || document.getElementsByTagName('head')[0]).appendChild(s);
+    </script>
+
+</head>
+<body>
+	<div id="wrapper">
+		<header>
+			<h1><a href="/">Luke Turner</a></h1>
+            <h2>&mdash; Vēnī, vīdī, cōgitāvī</h2>
+
+		</header>
+		<div id="sidebar">
+
+		<h2>
+			<a href="/Programming/Big%20regexes" rel="bookmark" title="Permalink to Big regexes">
+				Big&nbsp;regexes
+			</a>
+		</h2>
+        
+        <div class="date">Created Dec 30, 2013</div>
+
+	<nav>
+		<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#parsing-assembly" id="id1">Parsing Assembly</a></li>
+</ul>
+</div>
+	</nav>
+	
+	        
+
+
+		</div>
+
+        <div id="content-container">
+            <div id="content-inner">
+<section id="content" class="body">
+	<div class="entry-content">
+		
+<div class="section" id="parsing-assembly">
+<h2><a class="toc-backref" href="#id1">Parsing Assembly</a></h2>
+<p>Working through <em>Introduction to Computing Systems</em>, I had an opportunity to create a simple assembler for an assembly language called Hack. It is an extremely straightforward language (even for assembly), so a regex can parse it exactly to spec, unlike languages with more complicated grammars. Not only that, but by taking advantage of some extensions — <a class="reference external" href="http://docs.python.org/2/howto/regex.html#using-re-verbose">verbose mode</a> and <a class="reference external" href="http://docs.python.org/2/howto/regex.html#non-capturing-and-named-groups">named captures</a> — I can make a parsing regex that isn’t completely opaque, thereby completing the project and having some fun in the process.</p>
+<p>For more information about the Hack assembly language or <em>Introduction to Computing Systems</em>, you can visit <a class="reference external" href="http://www.nand2tetris.org/06.php">their website</a>.</p>
+<p>But, before we see the pretty version, here’s the parsing regex stripped of all whitespace and comments, since half the fun of regexes are their incomprehensible terseness:</p>
+<pre class="code literal-block">
+^\s*(?P&lt;instruction&gt;(?P&lt;L&gt;\((?P&lt;Lsymbol&gt;[A-Za-z_.$:][A-Za-z0-9_.$:]*)\))|
+(?P&lt;A&gt;@(?:(?P&lt;Ainstruction&gt;\d+)|(?P&lt;Asymbol&gt;[A-Za-z_.$:][A-Za-z0-9_.$:]*)
+))|(?P&lt;C&gt;(?:(?P&lt;Cdest&gt;A?M?D?)=)?(?P&lt;Ccomp&gt;0|1|-1|[-!]?[DAM]|[DAM][-+]1|[D
+AM][-+&amp;|][DAM])(?:;(?P&lt;Cjump&gt;J(G[TE]|L[TE]|EQ|NE|MP)))?))?\s*(?://.*)?$
+</pre>
+<p>And here is the version with full whitespace and comments. For a regex, it is surprisingly self-explanatory:</p>
+<pre class="code literal-block">
+^
+\s* # Whitepace gobbler
+
+# This capture group is non-empty if the line contains an instruction
+(?P&lt;instruction&gt;
+
+        # Matching labels of form:
+        # (Xxx)
+        # This group is non-empty if a label was matched.
+        (?P&lt;L&gt;
+                \(
+                        # Lsymbol group contains label name.
+                        # Matches words to Hack spec.
+                        (?P&lt;Lsymbol&gt; [A-Za-z_.$:][A-Za-z0-9_.$:]* )
+                \)
+        )
+
+        # Matching labels of form:
+        # @123 or @Xxx
+        # This group is non-empty if an A instruction was matched.
+        |(?P&lt;A&gt;
+                @(?:
+                        # Ainstruction group contains instruction target (numeric)
+                        # of form: @123
+                        (?P&lt;Ainstruction&gt; \d+ )
+                        |
+                        # Asymbol group contains label symbol
+                        # of form: @Xxx
+                        (?P&lt;Asymbol&gt; [A-Za-z_.$:][A-Za-z0-9_.$:]* )
+                )
+        )
+
+        # Matching labels of form dest=comp;jump
+        # A=D+M or AM=1 or A=!D;EQ etc.
+        # This group is non-empty if a C instruction was matched
+        |(?P&lt;C&gt;
+
+                (?:
+                        # Contains C destination
+                        (?P&lt;Cdest&gt; A?M?D? )
+                        =
+                )?
+
+                # Contains C computation
+                (?P&lt;Ccomp&gt;
+                        0
+                        | 1
+                        | -1
+                        | [-!]?[DAM]
+                        | [DAM][-+]1
+                        | [DAM][-+&amp;|][DAM]
+                )
+
+                (?:
+                        ;
+                        # Contains C jump conditional
+                        (?P&lt;Cjump&gt; J(G[TE]|L[TE]|EQ|NE|MP) )
+                )?
+        )
+)? # Note: each line can have 0 or 1 instructions.
+\s* # Whitespace gobbler
+(?://.*)? # Comment matching.
+$
+</pre>
+</div>
+
+	</div><!-- /.entry-content -->
+</section>
+            </div>
+        </div>
+
+		<footer>
+			<p>Copyright Luke Turner 2013</p>
+		</footer>
+	</div>
+</body>
+</html>
