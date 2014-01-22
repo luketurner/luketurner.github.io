@@ -194,17 +194,16 @@ start=7300 count=100
 </pre>
 <p>What&#8217;s with all the <code>\s*</code>? That matches 0 or more instances of <em>whitespace</em>. Basically it ignores any whitespace, for the purposes of finding a match. Since whitespace isn&#8217;t meaningful in Javascript &#8212; it could change at any time &#8212; we don&#8217;t want our scraper to rely on specific amounts of&nbsp;whitespace.</p>
 <p>If you search an item&#8217;s page with that regex, and it matches (and it should, unless for instance the item doesn&#8217;t exist), the match result&#8217;s first group, corresponding to the parenthesis in the regex, should contain a string that looks&nbsp;like:</p>
-<pre class="code literal-block">
-[[&quot;Fri, 07 Jun 2013 01:00:00 +0000&quot;,0.0938553884625,&quot;477 sold&quot;],
- [&quot;Sat, 08 Jun 2013 01:00:00 +0000&quot;,0.0483603179455,&quot;2267 sold&quot;],
- [&quot;Sun, 09 Jun 2013 01:00:00 +0000&quot;,0.0210077799857,&quot;1233 sold&quot;],
- [&quot;Mon, 10 Jun 2013 01:00:00 +0000&quot;,0.0198154132813,&quot;796 sold&quot;],
- [&quot;Tue, 11 Jun 2013 01:00:00 +0000&quot;,0.0146001335233,&quot;504 sold&quot;],
-                              ...
- [&quot;Wed, 22 Jan 2014 18:00:00 +0000&quot;,0.00176488806028,&quot;42 sold&quot;],
- [&quot;Wed, 22 Jan 2014 19:00:00 +0000&quot;,0.00205903593451,&quot;26 sold&quot;],
- [&quot;Wed, 22 Jan 2014 20:00:00 +0000&quot;,0.0160295180976,&quot;20 sold&quot;]]
-</pre>
+<div class="highlight"><pre><span class="p">[[</span><span class="s2">&quot;Fri, 07 Jun 2013 01:00:00 +0000&quot;</span><span class="p">,</span><span class="mf">0.0938553884625</span><span class="p">,</span><span class="s2">&quot;477 sold&quot;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s2">&quot;Sat, 08 Jun 2013 01:00:00 +0000&quot;</span><span class="p">,</span><span class="mf">0.0483603179455</span><span class="p">,</span><span class="s2">&quot;2267 sold&quot;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s2">&quot;Sun, 09 Jun 2013 01:00:00 +0000&quot;</span><span class="p">,</span><span class="mf">0.0210077799857</span><span class="p">,</span><span class="s2">&quot;1233 sold&quot;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s2">&quot;Mon, 10 Jun 2013 01:00:00 +0000&quot;</span><span class="p">,</span><span class="mf">0.0198154132813</span><span class="p">,</span><span class="s2">&quot;796 sold&quot;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s2">&quot;Tue, 11 Jun 2013 01:00:00 +0000&quot;</span><span class="p">,</span><span class="mf">0.0146001335233</span><span class="p">,</span><span class="s2">&quot;504 sold&quot;</span><span class="p">],</span>
+                              <span class="p">...</span>
+ <span class="p">[</span><span class="s2">&quot;Wed, 22 Jan 2014 18:00:00 +0000&quot;</span><span class="p">,</span><span class="mf">0.00176488806028</span><span class="p">,</span><span class="s2">&quot;42 sold&quot;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s2">&quot;Wed, 22 Jan 2014 19:00:00 +0000&quot;</span><span class="p">,</span><span class="mf">0.00205903593451</span><span class="p">,</span><span class="s2">&quot;26 sold&quot;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s2">&quot;Wed, 22 Jan 2014 20:00:00 +0000&quot;</span><span class="p">,</span><span class="mf">0.0160295180976</span><span class="p">,</span><span class="s2">&quot;20 sold&quot;</span><span class="p">]]</span>
+</pre></div>
 <p>The data doesn&#8217;t go back that far &#8212; it&#8217;s only about two weeks &#8212; but it&#8217;s interesting that as you approach &quot;now&quot;, the samples get more and more frequent until you have a data point every hour. By the way, this string is valid&nbsp;<span class="caps">JSON</span>.</p>
 <p>There are some other interesting things to be found. For instance, the <span class="caps">JS</span> variable <code>g_rgAssets</code> contains (after some object nesting), a <code>descriptions</code> key whose values are individual lines that populate the item description. So this is where you can find things like chest drop lists and recipe requirements. It also contains a <code>classid</code> key. You can get the classid for the items so that you can look up schema information about them with <a class="reference external" href="http://wiki.teamfortress.com/wiki/WebAPI/GetAssetClassInfo">ISteamEconomy/GetAssetClassInfo</a>.</p>
 </div>
