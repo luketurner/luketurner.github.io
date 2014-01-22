@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+		
+	<meta charset="utf-8">
+	<title>Notes on Scraping Steam&nbsp;Marketplace - Luke Turner</title>
+	<meta name="author" content="Luke Turner">
+	
+		<link href="/theme/css/style.min.css?e78f7ca8" rel="stylesheet" >
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<script src="/theme/js/base.min.js?07bbe624" type="text/javascript"></script>
+
+
+
+
+
+		
+    <script type= "text/javascript">
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = 'https:' == document.location.protocol ? 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js' : 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'; 
+        s[(window.opera ? "innerHTML" : "text")] =
+            "MathJax.Hub.Config({" + 
+            "    config: ['MMLorHTML.js']," + 
+            "    jax: ['input/TeX','input/MathML','output/HTML-CSS','output/NativeMML']," +
+            "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," + 
+            "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+            "    tex2jax: { " +
+            "        inlineMath: [ ['$','$'] ], " +
+            "        displayMath: [ ['$$','$$'] ]," +
+            "        processEscapes: true }, " +
+            "    'HTML-CSS': { " +
+            "        styles: { '.MathJax .mo, .MathJax .mi': {color: 'black ! important'}} " +
+            "    } " +
+            "}); ";
+        (document.body || document.getElementsByTagName('head')[0]).appendChild(s);
+    </script>
+
+</head>
+<body>
+	<div id="wrapper">
+		<header>
+			<h1><a href="/">Luke Turner</a></h1>
+            <h2>&mdash; Vēnī, vīdī, cōgitāvī</h2>
+
+		</header>
+		<div id="sidebar">
+
+		<h2>
+			<a href="/Programming/Notes%20on%20Scraping%20Steam%20Marketplace" rel="bookmark" title="Permalink to Notes on Scraping Steam Marketplace">
+				Notes on Scraping Steam&nbsp;Marketplace
+			</a>
+		</h2>
+        
+        <div class="date">Created Jan 15, 2014</div>
+
+	
+	        
+
+
+		</div>
+
+        <div id="content-container">
+            <div id="content-inner">
+<section id="content" class="body">
+	<div class="entry-content">
+		<div class="section" id="what-the-steam-api-can-tell-me-about-cosmetic-items">
+<h2>What the Steam <span class="caps">API</span> can tell me about cosmetic&nbsp;items</h2>
+<p>For a general overview of the Steam Web <span class="caps">API</span>, which is used for making games that use the Steam platform, see the <a class="reference external" href="https://partner.steamgames.com/documentation/webapi">Steam Web <span class="caps">API</span> documentation</a>. What&#8217;s that? The documentation is practically worthless? Unfortunately it appears so. There&#8217;s more detailed and interesting information available <a class="reference external" href="http://wiki.teamfortress.com/wiki/WebAPI">on the tf2 wiki</a>.</p>
+<p>There are three useful <span class="caps">API</span> calls that you can use to build a &quot;schema&quot; of all the items in the game. However, we will see later that these aren&#8217;t very helpful for market data scraping. If you just want to learn about scraping the Community Market, don&#8217;t bother with the <span class="caps">API</span> key and skip to <a class="reference internal" href="#scraping-the-community-market">Scraping the Community Market</a>.</p>
+<p>If you do want to mess around with the Steam Web <span class="caps">API</span>, you will need an <span class="caps">API</span> key. Luckily, they&#8217;re free, and anyone with a Steam account can easily <a class="reference external" href="http://steamcommunity.com/dev">get a key</a>.</p>
+<div class="section" id="ieconitems-appid-getschema">
+<h3><a class="reference external" href="http://wiki.teamfortress.com/wiki/WebAPI/GetSchema">IEconItems_&lt;appid&gt;/GetSchema</a></h3>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">getSchema</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="n">appid</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://api.steampowered.com/IEconItems_{}/GetSchema/v0001&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">appid</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;key&quot;</span><span class="p">:</span> <span class="n">api_key</span> <span class="p">}</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">&quot;result&quot;</span><span class="p">][</span><span class="s">&quot;items&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</pre></div>
+<p>Returns a list of all items in the game. Note that many of these items aren&#8217;t buyable (in fact they even include the default cosmetic &quot;items&quot; that the game comes with). This also defines a relationship between item names and the item&#8217;s <code>defindex</code> value, which is like an identifier that&#8217;s unique within the&nbsp;game.</p>
+</div>
+<div class="section" id="isteameconomy-getassetprices">
+<h3><a class="reference external" href="http://wiki.teamfortress.com/wiki/WebAPI/GetAssetPrices">ISteamEconomy/GetAssetPrices</a></h3>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">getAssetPrices</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="n">appid</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://api.steampowered.com/ISteamEconomy/GetAssetPrices/v0001/&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;key&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span> <span class="s">&quot;appid&quot;</span><span class="p">:</span> <span class="n">appid</span> <span class="p">}</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">&quot;result&quot;</span><span class="p">][</span><span class="s">&quot;assets&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</pre></div>
+<p>Returns a list of all items in the in-game store, including their prices &#8212; <em>for the in-game store</em>. These are not market prices. This will have fewer entries than the above, because it is limited to those items in the store. This also defines a relationship between item <code>defindex</code> values and their <code>classid</code>, which is meant to be unique among all Steam&nbsp;games.</p>
+</div>
+<div class="section" id="isteameconomy-getassetclassinfo">
+<h3><a class="reference external" href="http://wiki.teamfortress.com/wiki/WebAPI/GetAssetClassInfo">ISteamEconomy/GetAssetClassInfo</a></h3>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">getAssetClassInfo</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="n">appid</span><span class="p">,</span> <span class="n">classids</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">classids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://api.steampowered.com/ISteamEconomy/GetAssetClassInfo/v0001/&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&quot;key&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span>
+        <span class="s">&quot;appid&quot;</span><span class="p">:</span> <span class="n">appid</span><span class="p">,</span>
+        <span class="s">&quot;class_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">classids</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">classid</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="n">classids</span><span class="p">):</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&quot;classid&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span> <span class="o">=</span> <span class="n">classid</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">req</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</pre></div>
+<p>Returns detailed information about one or more &quot;asset classes&quot; &#8212; i.e. items. In order to look up an item here, you need its&nbsp;classid.</p>
+</div>
+<div class="section" id="results">
+<h3>Results</h3>
+<p>So, a typical pattern would&nbsp;be:</p>
+<ol class="arabic simple">
+<li>Call GetSchema to get a list of all&nbsp;items</li>
+<li>Call GetPrices and join the result (on <code>defindex</code>, called <code>name</code> in GetPrices) with the results from&nbsp;1.</li>
+<li>Assemble a list of classids and call GetAssetClassInfo with all of&nbsp;them.</li>
+</ol>
+<p>There is a problem: if an item can&#8217;t be bought in the ingame store, the GetPrices call won&#8217;t be able to tell us that item&#8217;s classid. We can discover that later through manual Market&nbsp;scraping.</p>
+<p>In fact, there are many&nbsp;problems.</p>
+</div>
+</div>
+<div class="section" id="different-system-same-game">
+<h2>Different System, Same&nbsp;Game</h2>
+<p>DotA 2 items can have various modifiers which Steam refers to as qualities. The &quot;official&quot; list of DotA 2 qualities is given in the game&#8217;s schema (see <code>IEconItems_570/GetSchema</code>).</p>
+<div class="highlight"><pre><span class="s2">&quot;qualities&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;normal&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;genuine&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;vintage&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;unusual&quot;</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">&quot;unique&quot;</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="s2">&quot;community&quot;</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;developer&quot;</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="s2">&quot;selfmade&quot;</span><span class="o">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="s2">&quot;customized&quot;</span><span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="s2">&quot;strange&quot;</span><span class="o">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="s2">&quot;completed&quot;</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s2">&quot;haunted&quot;</span><span class="o">:</span> <span class="mi">11</span><span class="p">,</span>
+    <span class="s2">&quot;tournament&quot;</span><span class="o">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s2">&quot;favored&quot;</span><span class="o">:</span> <span class="mi">13</span><span class="p">,</span>
+    <span class="s2">&quot;ascendant&quot;</span><span class="o">:</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="s2">&quot;autographed&quot;</span><span class="o">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s2">&quot;legacy&quot;</span><span class="o">:</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="s2">&quot;exalted&quot;</span><span class="o">:</span> <span class="mi">17</span><span class="p">,</span>
+    <span class="s2">&quot;frozen&quot;</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>
+    <span class="s2">&quot;corrupted&quot;</span><span class="o">:</span> <span class="mi">19</span>
+<span class="p">}</span>
+</pre></div>
+<p>Since these qualities can dramatically affect pricing, and since the market treats items with different qualities as different (see <a class="reference external" href="http://steamcommunity.com/market/listings/570/Battlefury">Battlefury</a> vs. <a class="reference external" href="http://steamcommunity.com/market/listings/570/Genuine%20Battlefury">Genuine Battlefury</a>), we can&#8217;t assume a 1:1 relationship between schema items and market&nbsp;items.</p>
+<p>We must face with the sad truth that the schema has let us down: even if we build a database of every item in the game using the Steam <span class="caps">API</span>, it will be woefully incomplete if we want to use it in the Community&nbsp;Market.</p>
+<p>We&#8217;re left with no choice but scraping the market directly, and only using these data for getting more detailed information about items as&nbsp;needed.</p>
+</div>
+<div class="section" id="scraping-the-community-market">
+<h2>Scraping the Community&nbsp;Market</h2>
+<p>&quot;Web scraping&quot; tends to be associated with the mystique of search engines, advanced algorithms, and &quot;big data&quot;. But the actual nature of Web scraping is not complicated. The entire World Wide Web implements a gigantic hypermedia <span class="caps">API</span> and a Web scraper is just a consumer, like a browser or anything else. Typically the only complexity in Web scraping is trying to extract computer-comprehensible data from <span class="caps">HTML</span> targeted at human readers (if it&#8217;s designed for programmatic access, you&#8217;re not scraping &#8212; you&#8217;re just&nbsp;consuming).</p>
+<p>However, scraping can be a hassle for the scraped. Careless Web scrapers can make trouble for a website by inducing strain on the site&#8217;s servers or by collecting private data. This is especially true for websites designed to store session information for users &#8212; often a site will create a new session for each request made by a scraper that doesn&#8217;t handle cookies. Sessions often stay in memory for five minutes to a half hour, so a scraper that makes 20 queries a second can quickly consume huge quantities of server memory. (Does the Steam Community Market use sessions? Yes &#8212; just look at the&nbsp;cookies.)</p>
+<p>Luckily, servers have a way of communicating to scrapers: in their <a class="reference external" href="http://www.robotstxt.org/">robots.txt</a> file, they can specify allowed <span class="caps">URLS</span>, user agents, and request rates. Of course, robots don&#8217;t always follow the rules set out for them. But if you are writing a &quot;principled&quot; scraper, you should always look for the site&#8217;s <code>/robots.txt</code> file. So, let&#8217;s see what the Steam market&#8217;s policy is towards&nbsp;scrapers.</p>
+<pre class="code literal-block">
+$ curl steamcommunity.com/robots.txt
+User-agent: *
+Disallow: /actions/
+</pre>
+<p>It looks like we&#8217;re safe as long as we don&#8217;t ever call something under <code>/actions/</code>. Makes you curious, doesn&#8217;t it? But, curiosity aside, we&#8217;ll never need to break that rule. The only URLs we&#8217;re interested in will resemble the&nbsp;following:</p>
+<pre class="code literal-block">
+http://steamcommunity.com/market/search/render/?query=appid%3A570&amp;search_descriptions=0&amp;start=10&amp;count=10
+http://steamcommunity.com/market/listings/570/Recipe%3A%20Materialize%20Item
+</pre>
+<p>The former is a list of items (used to render a typical <a class="reference external" href="http://steamcommunity.com/market/search?q=appid:570#p2"><span class="caps">HTML</span> market listing</a>). The latter is a description page for a single item. Note that in the search <span class="caps">URL</span> there are query parameters <code>start=10</code> and <code>count=10</code>. In order to collect all the items in the game, we can iterate these values. Trial and error indicates you can request up to 100 items at a time. Typically we want to request the largest amount possible, since one big request loads the server a lot less than multiple small ones. Also, the server&#8217;s response (which is <span class="caps">JSON</span> with each item&#8217;s rendered <span class="caps">HTML</span> as a property), helpfully includes a <code>total_count</code> value (7315 at time of writing) So we can iterate like&nbsp;so:</p>
+<pre class="code literal-block">
+start=0    count=100
+start=100  count=100
+start=200  count=100
+start=300  count=100
+   ...        ...
+start=7300 count=100
+</pre>
+<p>Each request will give us a list of 100 items. Notably, this contains not only the item&#8217;s name, but the current price as well! If the current price is all you need, we can be satisfied with this. For each item, just extract the contents of the element with class <code>market_listing_item_name</code>, and find the price by looking for text of the form of money: <code>$xxx.xx</code>. Since the latter isn&#8217;t contained in its own element, using <span class="caps">HTML</span> traversal is less effective than a simple textual search (whether using regexes or&nbsp;not).</p>
+<p>But maybe you want some pretty graphs so you want historical data. For that, we need to delve into the item description&nbsp;pages.</p>
+<div class="section" id="item-page-scraping">
+<h3>Item Page&nbsp;Scraping</h3>
+<p>I can tell you that in each item page, historical data is rendered in a dynamic graph using <code>jqplot</code>. The data for that graph is stored in the Javascript variable <code>line1</code>. (How do I know? Read the source!) Unfortunately since the data is stored in Javascript we can&#8217;t use an <span class="caps">HTML</span>/<span class="caps">XML</span> parser to get at it. Luckily, it&#8217;s written in literal notation right there in the page, so a simple regex can find&nbsp;it:</p>
+<pre class="code literal-block">
+^\s*var\s*line1\s*=\s*(.+);\s*$
+</pre>
+<p>What&#8217;s with all the <code>\s*</code>? That matches 0 or more instances of <em>whitespace</em>. Basically it ignores any whitespace, for the purposes of finding a match. Since whitespace isn&#8217;t meaningful in Javascript &#8212; it could change at any time &#8212; we don&#8217;t want our scraper to rely on specific amounts of&nbsp;whitespace.</p>
+<p>If you search an item&#8217;s page with that regex, and it matches (and it should, unless for instance the item doesn&#8217;t exist), the match result&#8217;s first group, corresponding to the parenthesis in the regex, should contain a string that looks&nbsp;like:</p>
+<pre class="code literal-block">
+[[&quot;Fri, 07 Jun 2013 01:00:00 +0000&quot;,0.0938553884625,&quot;477 sold&quot;],
+ [&quot;Sat, 08 Jun 2013 01:00:00 +0000&quot;,0.0483603179455,&quot;2267 sold&quot;],
+ [&quot;Sun, 09 Jun 2013 01:00:00 +0000&quot;,0.0210077799857,&quot;1233 sold&quot;],
+ [&quot;Mon, 10 Jun 2013 01:00:00 +0000&quot;,0.0198154132813,&quot;796 sold&quot;],
+ [&quot;Tue, 11 Jun 2013 01:00:00 +0000&quot;,0.0146001335233,&quot;504 sold&quot;],
+                              ...
+ [&quot;Wed, 22 Jan 2014 18:00:00 +0000&quot;,0.00176488806028,&quot;42 sold&quot;],
+ [&quot;Wed, 22 Jan 2014 19:00:00 +0000&quot;,0.00205903593451,&quot;26 sold&quot;],
+ [&quot;Wed, 22 Jan 2014 20:00:00 +0000&quot;,0.0160295180976,&quot;20 sold&quot;]]
+</pre>
+<p>The data doesn&#8217;t go back that far &#8212; it&#8217;s only about two weeks &#8212; but it&#8217;s interesting that as you approach &quot;now&quot;, the samples get more and more frequent until you have a data point every hour. By the way, this string is valid&nbsp;<span class="caps">JSON</span>.</p>
+<p>There are some other interesting things to be found. For instance, the <span class="caps">JS</span> variable <code>g_rgAssets</code> contains (after some object nesting), a <code>descriptions</code> key whose values are individual lines that populate the item description. So this is where you can find things like chest drop lists and recipe requirements. It also contains a <code>classid</code> key. You can get the classid for the items so that you can look up schema information about them with <a class="reference external" href="http://wiki.teamfortress.com/wiki/WebAPI/GetAssetClassInfo">ISteamEconomy/GetAssetClassInfo</a>.</p>
+</div>
+<div class="section" id="being-polite">
+<h3>Being&nbsp;Polite</h3>
+<p>If you want to scrape every item page, that&#8217;s 7,389 requests (7,315 item pages plus 74 pages of search results). If you proceed with scraping as fast as possible, you will cause strain and you might get in trouble (7,389 requests from one source over a few minutes will raise some eyebrows if anyone&#8217;s watching). It&#8217;s better to be polite and limit your request rate. My rule of thumb is: one or fewer requests per second. If you send one request a second, you&#8217;ll be done in 123&nbsp;minutes.</p>
+<p>Just keep in mind that behind each server is a sysadmin. Be polite and he will not resent you. But if you come between him and uptime, like as not you&#8217;ll someday find your <span class="caps">IP</span> banned. Scraping websites is almost always a nuisance to the site&#8217;s owners, so just be considerate and you will find a lot less ill-will directed in your&nbsp;direction.</p>
+</div>
+</div>
+
+	</div><!-- /.entry-content -->
+</section>
+            </div>
+        </div>
+
+		<footer>
+			<p>Copyright Luke Turner 2013</p>
+		</footer>
+	</div>
+</body>
+</html>
