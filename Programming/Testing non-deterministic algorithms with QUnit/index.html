@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+		
+	<meta charset="utf-8">
+	<title>Testing random algorithms with&nbsp;QUnit - Luke Turner</title>
+	<meta name="author" content="Luke Turner">
+	
+		<link href="/theme/css/style.min.css?e78f7ca8" rel="stylesheet" >
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<script src="/theme/js/base.min.js?07bbe624" type="text/javascript"></script>
+
+
+
+
+
+		
+    <script type= "text/javascript">
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = 'https:' == document.location.protocol ? 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js' : 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'; 
+        s[(window.opera ? "innerHTML" : "text")] =
+            "MathJax.Hub.Config({" + 
+            "    config: ['MMLorHTML.js']," + 
+            "    jax: ['input/TeX','input/MathML','output/HTML-CSS','output/NativeMML']," +
+            "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," + 
+            "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+            "    tex2jax: { " +
+            "        inlineMath: [ ['$','$'] ], " +
+            "        displayMath: [ ['$$','$$'] ]," +
+            "        processEscapes: true }, " +
+            "    'HTML-CSS': { " +
+            "        styles: { '.MathJax .mo, .MathJax .mi': {color: 'black ! important'}} " +
+            "    } " +
+            "}); ";
+        (document.body || document.getElementsByTagName('head')[0]).appendChild(s);
+    </script>
+
+</head>
+<body>
+	<div id="wrapper">
+		<header>
+			<h1><a href="/">Luke Turner</a></h1>
+            <h2>&mdash; Vēnī, vīdī, cōgitāvī</h2>
+
+		</header>
+		<div id="sidebar">
+
+		<h2>
+			<a href="/Programming/Testing%20non-deterministic%20algorithms%20with%20QUnit" rel="bookmark" title="Permalink to Testing random algorithms with QUnit">
+				Testing random algorithms with&nbsp;QUnit
+			</a>
+		</h2>
+        
+        <div class="date">Created Jan 23, 2014</div>
+
+	
+	        
+
+
+		</div>
+
+        <div id="content-container">
+            <div id="content-inner">
+<section id="content" class="body">
+	<div class="entry-content">
+		<p>In working on my Javascript clustering library I ran into a problem: how do you run unit tests on algorithms that are deliberately nondeterministic? (In Javascript, &quot;nondeterministic&quot; basically means it&#8217;s using <code>Math.random()</code>).</p>
+<p>So for instance we want to be able to make this&nbsp;work:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span> <span class="p">...</span> <span class="p">]</span>
+<span class="kd">var</span> <span class="nx">predicted_result</span> <span class="o">=</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s2">&quot;kmeans&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">deepEqual</span><span class="p">(</span><span class="nx">kmeans</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nx">predicted_result</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+<p>But we don&#8217;t know exactly what <code>predicted_result</code> is supposed to look like, because <code>kmeans</code> is&nbsp;non-deterministic.</p>
+<p>Well, you can predict <em>properties</em> of the output &#8212; a consistent quantity or length of items, perhaps, even if the order is different. But if you really want to test correctness, this isn&#8217;t strong&nbsp;enough.</p>
+<p>Instead, we will try to extract the random part of the algorithm and replace it with a constant value during testing only. You could let the function take another argument and decide whether to behave deterministically based on that argument, or you could have the argument be a function that&#8217;s called to get random numbers. But there&#8217;s another way that doesn&#8217;t involve changing the algorithm at all: <em>changing the definition of</em> <code>Math.random</code> <em>while you run the test</em>. Implementing this results in something like the&nbsp;following:</p>
+<div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="s2">&quot;kmeans&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Save the real definition of random so we can re-instate it later.</span>
+    <span class="kd">var</span> <span class="nx">real_random</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">;</span>
+
+    <span class="c1">// Values we want calls to Math.random() to return.</span>
+    <span class="kd">var</span> <span class="nx">randoms</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>
+
+    <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">randoms</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+    <span class="p">};</span>
+
+    <span class="nx">deepEqual</span><span class="p">(</span><span class="nx">kmeans</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nx">predicted_result</span><span class="p">);</span>
+
+    <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span> <span class="o">=</span> <span class="nx">real_random</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+<p>This practice can be abstracted out to a function <code>with_random</code>:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">with_random</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">randoms</span><span class="p">,</span> <span class="nx">assertf</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">real_random</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">;</span>
+
+    <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">randoms</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+    <span class="p">};</span>
+
+    <span class="nx">assertf</span><span class="p">();</span>
+
+    <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span> <span class="o">=</span> <span class="nx">real_random</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+<p>Now you can easily specify what random values you want to appear in your test. Since this basically turns the algorithm into a deterministic one, you can specify the expected output exactly. We know that if the result data changes at all, the algorithm&#8217;s logic has&nbsp;changed.</p>
+<div class="highlight"><pre><span class="c1">// this works</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span> <span class="p">...</span> <span class="p">]</span>
+<span class="kd">var</span> <span class="nx">predicted_result</span> <span class="o">=</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s2">&quot;kmeans&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">with_random</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">deepEqual</span><span class="p">(</span><span class="nx">kmeans</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nx">predicted_result</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+<p>One final note: since <code>Math.random()</code> returns a floating-point value $0 &lt; x &lt; 1$, you want to provide those types of values to <code>with_random</code>. If you don&#8217;t provide enough values (say if <code>kmeans</code> called <code>Math.random()</code> three times in the above example), the test will&nbsp;fail.</p>
+
+	</div><!-- /.entry-content -->
+</section>
+            </div>
+        </div>
+
+		<footer>
+			<p>Copyright Luke Turner 2013</p>
+		</footer>
+	</div>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-26056211-1', 'luketurner.org');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
