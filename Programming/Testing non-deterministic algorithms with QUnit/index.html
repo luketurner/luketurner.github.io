@@ -7,7 +7,7 @@
 	<title>Testing random algorithms with&nbsp;QUnit - Luke Turner</title>
 	<meta name="author" content="Luke Turner">
 	
-		<link href="/theme/css/style.min.css?e78f7ca8" rel="stylesheet" >
+		<link href="/theme/css/style.min.css?ecde7c1f" rel="stylesheet" >
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 		<script src="/theme/js/base.min.js?07bbe624" type="text/javascript"></script>
@@ -66,7 +66,7 @@
             <div id="content-inner">
 <section id="content" class="body">
 	<div class="entry-content">
-		<p>In working on my Javascript clustering library I ran into a problem: how do you run unit tests on algorithms that are deliberately nondeterministic? (In Javascript, &quot;nondeterministic&quot; basically means it&#8217;s using <code>Math.random()</code>).</p>
+		<p>In working on my Javascript clustering library I ran into a problem: how do you run unit tests on algorithms that are deliberately nondeterministic? (For this project, &quot;nondeterministic&quot; basically means &quot;it&#8217;s using <code>Math.random()</code>&quot;).</p>
 <p>So for instance we want to be able to make this&nbsp;work:</p>
 <div class="highlight"><pre><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span> <span class="p">...</span> <span class="p">]</span>
 <span class="kd">var</span> <span class="nx">predicted_result</span> <span class="o">=</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>

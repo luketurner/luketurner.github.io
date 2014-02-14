@@ -28,7 +28,7 @@
   font-weight: bold;
 }
 
-/* line 67 */
+/* line 68 */
 body {
   font-family: Junicode,Georgia,"Times New Roman",serif;
   color: #3d3d3d;
@@ -36,13 +36,13 @@ body {
   line-height: 28.5px;
 }
 
-/* line 74 */
+/* line 75 */
 header {
   margin: 30px 50px;
   background-color: white;
   color: #3d3d3d;
 }
-/* line 76 */
+/* line 77 */
 header h1 {
   display: inline-block;
   vertical-align: top;
@@ -52,7 +52,7 @@ header h1 {
   margin-bottom: 0px;
   font-size: 28.5px;
 }
-/* line 84 */
+/* line 85 */
 header h2 {
   display: inline-block;
   vertical-align: top;
@@ -71,7 +71,7 @@ header a:hover {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 92 */
+/* line 93 */
 header #expander {
   display: inline-block;
   vertical-align: top;
@@ -83,13 +83,13 @@ header #expander {
   width: 30px;
   color: white;
 }
-/* line 101 */
+/* line 102 */
 header #expander:hover {
   background-color: white;
   text-decoration: none;
   color: black;
 }
-/* line 107 */
+/* line 108 */
 header #secretnav {
   height: 24px;
   margin: 10px 20px 10px 20px;
@@ -98,7 +98,7 @@ header #secretnav {
   font-size: 24px;
 }
 
-/* line 116 */
+/* line 117 */
 #sidebar {
   display: inline-block;
   vertical-align: top;
@@ -116,43 +116,43 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 120 */
+/* line 121 */
 #sidebar nav {
   margin-top: 15px;
 }
-/* line 123 */
+/* line 124 */
 #sidebar nav .contents .topic-title {
   font-weight: bold;
   font-size: 110%;
   text-align: center;
 }
-/* line 124 */
+/* line 125 */
 #sidebar nav .contents ul {
   list-style-type: decimal;
 }
-/* line 126 */
+/* line 127 */
 #sidebar nav p, #sidebar nav ul {
   margin-top: 4px;
   margin-bottom: 4px;
 }
-/* line 128 */
+/* line 129 */
 #sidebar h2 {
   font-size: 22.8px;
   margin-top: 29px;
   margin-bottom: 0px;
 }
-/* line 133 */
+/* line 134 */
 #sidebar h3 {
   font-size: 20.9px;
   margin-bottom: 0px;
   margin-top: 20px;
 }
-/* line 138 */
+/* line 139 */
 #sidebar p, #sidebar dl {
   margin-top: 0px;
   margin-bottom: 0px;
 }
-/* line 142 */
+/* line 143 */
 #sidebar .date {
   margin: none;
   font-size: 15.2px;
@@ -160,7 +160,7 @@ header #secretnav {
   line-height: 19px;
 }
 
-/* line 149 */
+/* line 150 */
 #content-container {
   display: inline-block;
   vertical-align: top;
@@ -170,17 +170,18 @@ header #secretnav {
 /* line 56 */
 #content-container a {
   color: #3333cc;
+  text-decoration: none;
 }
-/* line 58 */
+/* line 59 */
 #content-container a:hover {
   background-color: yellow;
 }
-/* line 153 */
+/* line 154 */
 #content-container .category-list {
   display: inline-block;
   vertical-align: top;
 }
-/* line 155 */
+/* line 156 */
 #content-container .category-list dt {
   font-size: 120%;
   margin: 0px 0px 0px 10px;
@@ -197,21 +198,21 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 156 */
+/* line 157 */
 #content-container .category-list dd {
   margin-left: none;
   padding-left: none;
 }
-/* line 158 */
+/* line 159 */
 #content-container .post-list {
   list-style: none outside none;
 }
 
-/* line 163 */
+/* line 164 */
 #content-inner {
   max-width: 700px;
 }
-/* line 165 */
+/* line 166 */
 #content-inner h2 {
   background-color: white;
   color: #3d3d3d;
@@ -226,7 +227,7 @@ header #secretnav {
   text-decoration: underline;
   background-color: yellow;
 }
-/* line 166 */
+/* line 167 */
 #content-inner hr {
   margin-top: 0px;
   margin-bottom: 30px;
@@ -235,12 +236,12 @@ header #secretnav {
   font-size: 25px;
   line-height: 10px;
 }
-/* line 173 */
+/* line 174 */
 #content-inner hr:after {
   content: "- ∞ -";
   display: inline;
 }
-/* line 178 */
+/* line 179 */
 #content-inner aside {
   padding: 10px;
   background-color: #f7f7f9;
@@ -248,24 +249,38 @@ header #secretnav {
   border: 1px solid #e1e1e8;
   border-radius: 4px;
 }
-/* line 185 */
+/* line 186 */
 #content-inner code, #content-inner pre {
   font-family: "Consolas", "Monaco", monospace;
   font-size: 15.2px;
+  line-height: 1.1em;
 }
-/* line 189 */
+/* line 191 */
+#content-inner code {
+  color: black;
+}
+/* line 192 */
 #content-inner table {
   border: none;
   border-collapse: collapse;
   width: 500px;
 }
-/* line 193 */
+/* line 196 */
 #content-inner table * {
   border: none;
   border-bottom: 1px solid grey;
 }
-
 /* line 201 */
+#content-inner .footnote {
+  width: 100%;
+  margin-top: 75px;
+}
+/* line 204 */
+#content-inner .footnote * {
+  border: none;
+}
+
+/* line 209 */
 footer p {
   font-size: 80%;
   text-align: center;

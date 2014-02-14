@@ -7,7 +7,7 @@
 	<title>n-grams - Luke Turner</title>
 	<meta name="author" content="Luke Turner">
 	
-		<link href="/theme/css/style.min.css?e78f7ca8" rel="stylesheet" >
+		<link href="/theme/css/style.min.css?ecde7c1f" rel="stylesheet" >
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 		<script src="/theme/js/base.min.js?07bbe624" type="text/javascript"></script>
@@ -60,10 +60,11 @@
 		<div class="contents topic" id="table-of-contents">
 <p class="topic-title first">Table of Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#preparing-the-corpus" id="id3">Preparing The Corpus</a></li>
-<li><a class="reference internal" href="#coding-the-model" id="id4">Coding the Model</a></li>
-<li><a class="reference internal" href="#sentence-generation" id="id5">Sentence Generation</a></li>
-<li><a class="reference internal" href="#sample-executions" id="id6">Sample Executions</a></li>
+<li><a class="reference internal" href="#introduction" id="id3">Introduction</a></li>
+<li><a class="reference internal" href="#preparing-the-corpus" id="id4">Preparing The Corpus</a></li>
+<li><a class="reference internal" href="#coding-the-model" id="id5">Coding the Model</a></li>
+<li><a class="reference internal" href="#sentence-generation" id="id6">Sentence Generation</a></li>
+<li><a class="reference internal" href="#sample-executions" id="id7">Sample Executions</a></li>
 </ul>
 </div>
 	</nav>
@@ -78,14 +79,21 @@
 <section id="content" class="body">
 	<div class="entry-content">
 		
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id3">Introduction</a></h2>
+<p>Natural language processing seems daunting. Any program that delves into interactions with human language must be able to understand language,  or to at least extract some semantic information from the language, right? Wrong! Most <span class="caps">NLP</span> that’s done today uses models based on probability (<em>stochastic</em> models) instead of models based on interpreting meaning (<em>semantic</em> models). What this means in practice is that most <span class="caps">NLP</span> is not underpinned by a semantic understanding of human speech, like a <span class="caps">CFG</span>, but instead by a statistical model — i.e. data structure — that is built based on a large collection (<em>corpus</em>) of natural language.</p>
+<p>One reason Google’s <span class="caps">NLP</span> is so often praised is that they have probably the second-biggest corpus of natural language in the world (the <span class="caps">NSA</span> likely has the biggest).</p>
+<p>So, what does a stochastic model look like in practice? In order to give you, dear reader, a more intuitive understanding of how statistics can emulate semantics, I will embark on a whirlwind tour of the n-gram model, a stochastic model among whose many practical applications is the ability to generate text "in the style of" an author.</p>
+<p>I will not go into great detail about the mathematics behind the model; instead, I will outline a working (however Spartan) implementation in Python. It is my hope that the model will make more sense in this way.</p>
+</div>
 <div class="section" id="preparing-the-corpus">
-<h2><a class="toc-backref" href="#id3">Preparing The Corpus</a></h2>
-<p>For this example, I will be using the <a class="reference external" href="http://nltk.github.com/nltk_data/packages/corpora/gutenberg.zip">gutenberg corpus</a> from <span class="caps">NLTK</span>’s <a class="reference external" href="http://nltk.org/nltk_data/">collection of corpora</a>. I also will be using a simple function that gets the contents of one of the sample files:</p>
+<h2><a class="toc-backref" href="#id4">Preparing The Corpus</a></h2>
+<p>Selection of a corpus is essential in real-world <span class="caps">NLP</span>. The corpus should be not too big, or the model may take too long to train, but it also can’t be too small (intuitively, the model needs a lot of text in order to learn. The more complex and varied the subject matter, the larger the corpus required.) For this example, I will be using the <a class="reference external" href="http://nltk.github.com/nltk_data/packages/corpora/gutenberg.zip">gutenberg corpus</a> from <span class="caps">NLTK</span>’s <a class="reference external" href="http://nltk.org/nltk_data/">collection of corpora</a>. I also will be using a simple function that gets the contents of one of the sample files:</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">getenburg</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">"gutenberg/"</span><span class="p">,</span> <span class="n">fname</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
-<p>However, this just returns a long string. Before we can feed the corpus text into our model, we need to tokenize it to ensure that each word is represented consistently in the text. For instance, "Ago" and "ago" and "ago." would be treated as different tokens by our model.  Instead, we want each of them to be represented as "<span class="caps">AGO</span>", and the punctuation can also be made into separate tokens (e.g. <code>[COMMA]</code>).</p>
+<p>However, this function just returns a long string. Before we can feed the corpus text into our model, we need to tokenize it to ensure that each word is represented consistently in the text. For instance, "Ago" and "ago" and "ago." would be treated as different tokens by our model.  Instead, we want each of them to be represented as "<span class="caps">AGO</span>", and the punctuation can also be made into separate tokens (e.g. <code>[COMMA]</code>).</p>
 <p>Since this is meant to be simple, we won’t use a full-power tokenizer. Instead, we can implement our own as a table of <code>[regex, replacement]</code> pairs, and then apply each regex in turn to the text. There are many different techniques or conventions people use in tokenization of natural language. I’ve illustrated a few in the code below, which defines some basic regexes, applies them to the text, and then splits the result into a list of tokens.</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span>
@@ -102,12 +110,12 @@
     <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="nb">apply</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">ws</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">' '</span><span class="p">)</span> <span class="k">if</span> <span class="n">w</span> <span class="o">!=</span> <span class="s">''</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">tokens</span> <span class="o">+</span> <span class="p">[</span><span class="s">"[<span class="caps">SENTENCE</span>-<span class="caps">BREAK</span>]"</span><span class="p">]</span>
 </pre></div>
-<p>Note: We add a <code>[SENTENCE-BREAK]</code> token to the end of the corpus. This is because unless the corpus ends in an <code>[SENTENCE-BREAK]</code>, our sentence generator could just walk off the edge of the list.</p>
+<p>Note: We add a <code>[SENTENCE-BREAK]</code> token to the end of the corpus. This is because if the corpus does not end in an <code>[SENTENCE-BREAK]</code>, and the last word happens to be unique in the corpus, that word will have no successor — our function will not know what word to put after it, since it was never seen with a word following it in the corpus. In probability-speak, $P(\text{next-word}|\text{last-word}) = 0$, which is bad for the model.</p>
 </div>
 <div class="section" id="coding-the-model">
-<h2><a class="toc-backref" href="#id4">Coding the Model</a></h2>
+<h2><a class="toc-backref" href="#id5">Coding the Model</a></h2>
 <p>Implementing n-gram model training in Python is very straightforward. Here, I use the <code>collections.defaultdict</code> module, because I think it helps the model logic shine. In a normal python <code>dict</code> object, trying to access a key with no stored value will raise a <code>KeyError</code>. In a defaultdict, no error is raised; instead, that key has its value initialized automatically. This saves us some ugly conditional <code>if word in model</code> kind of checks. Our model is a nested dictionary, so the values of the outer dictionary are initialized to <code>defaultdict(int)</code>.</p>
-<p>The keys of the outer dictionary are the priors, a tuple of length $n-1$ in an $n$-gram model. The keys of the inner dictionary are single words, and their values are frequencies: $F(\text{word}|\text{prior})$. Note that we don’t have to convert them into probabilities $P(\text{word}|\text{prior})$, because the $F \rightarrow P$ conversion doesn’t alter the proportions of the data (it’s just normalization).</p>
+<p>The keys of the outer dictionary are the priors, a tuple of length $n-1$ in an $n$-gram model. The keys of the inner dictionary are single words, and their values are frequencies: $F(\text{word}|\text{prior})$. Note that we don’t have to convert them into probabilities $P(\text{word}|\text{prior})$, because the $F \rightarrow P$ conversion doesn’t alter the proportions of the data (it’s just a constant division: $P(\text{word}|\text{prior}) = \frac{F(\text{word}|\text{prior})}{F(\text{prior})}$).</p>
 <p>In short, we’re constructing a conditional frequency distribution.</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
     <span class="n">prior_n</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span> <span class="c"># n-1 words in the prior tuple</span>
@@ -124,10 +132,10 @@
 
     <span class="k">return</span> <span class="n">model</span>
 </pre></div>
-<p>There is something interesting here. Because we’re only interested in the context within a sentence, if we have a prior like <code>("AGAIN", "[SENTENCE-BREAK]")</code>, the <code>AGAIN</code> doesn’t add interesting context. For instance, no matter the $n$ used, the only context we can have for the first word is $F(\text{word}|\text{[sentence-start]})$ <a class="footnote-reference" href="#id2" id="id1">[*]</a>. It’s faster to collect these lower-context priors directly in the model, instead of having to implement unusual behavior for calculating them when you start a sentence.</p>
+<p>There is something interesting here. Because we’re only interested in the context within a sentence, if we have a prior like <code>("AGAIN", "[SENTENCE-BREAK]")</code>, the <code>AGAIN</code> doesn’t add interesting context. For instance, no matter the value of $n$, the only context we can have for the first word is $F(\text{word}|\text{[sentence-start]})$ <a class="footnote-reference" href="#id2" id="id1">[*]</a>. It’s faster to collect these lower-context priors directly in the model, instead of having to implement unusual behavior for calculating them when you start a sentence.</p>
 </div>
 <div class="section" id="sentence-generation">
-<h2><a class="toc-backref" href="#id5">Sentence Generation</a></h2>
+<h2><a class="toc-backref" href="#id6">Sentence Generation</a></h2>
 <p>In order to generate a sentence we need a selector function that can pick the next word, given an $(n-1)$-word prior, using the data in the model. There are different ways you can pick the words. The most true-to-math is probably a weighted random selection over the frequency distribution of the prior. However, a lazy option is to just pick the words with the highest conditional frequency. Here are basic implementations of both:</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">max_selector</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">words</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
@@ -154,7 +162,7 @@
 </pre></div>
 </div>
 <div class="section" id="sample-executions">
-<h2><a class="toc-backref" href="#id6">Sample Executions</a></h2>
+<h2><a class="toc-backref" href="#id7">Sample Executions</a></h2>
 <p>Now, we can generate some sentences. This driver produces a sampler of sentences from every work in the Gutenberg collection. The sentence preceded with <code>(max)</code> uses <code>max_selector</code>. The other 5 use <code>dist_selector</code>, which is typically more effective.</p>
 <p>The output of an execution is quite long, so I’ve stored it in a separate file <a class="reference external" href="/static/ngram-output.txt">here</a>. Notice how the sentences generated with <code>max_selector</code> often produce infinite loops or other undesirable behavior.</p>
 <p>Here is the driving code:</p>

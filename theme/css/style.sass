@@ -55,6 +55,7 @@ $header_height: 44px;
 @mixin simple_linking {
     a { 
         color: $link_color;
+        text-decoration: none;
         &:hover { background-color: yellow; }
     }
 }
@@ -185,7 +186,9 @@ header {
     code, pre {
         font-family: $font-monospace;
         font-size: $font_size * 0.8;
+        line-height: 1.1em;
     }
+    code { color: black; }
     table {
         border: none;
         border-collapse: collapse;
@@ -194,6 +197,11 @@ header {
             border: none;
             border-bottom: 1px solid grey;
         }
+    }
+    .footnote {
+        width: 100%;
+        margin-top: 75px;
+        * { border: none; }
     }
 }
 
