@@ -6,75 +6,55 @@
 	<title>Luke Turner</title>
 	<meta name="author" content="Luke Turner">
 	
-		<link href="/theme/css/style.min.css?ecde7c1f" rel="stylesheet" >
-	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-		<script src="/theme/js/base.min.js?07bbe624" type="text/javascript"></script>
+    <link href="unsemantic-grid-responsive-no-ie7.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <style>
+        body { font: 14px "Open Sans",sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-weight: normal; }
+        dt { color: gray; }
+        ul { list-style: none; }
+        a, a:visited, a:hover { color: #0095DD; text-decoration: none; }
+    </style>
 </head>
-<body>
-	<div id="wrapper">
-		<header>
-			<h1><a href="/">Luke Turner</a></h1>
-            <h2>&mdash; Vēnī, vīdī, cōgitāvī</h2>
+<body class="grid-container">
+    <div class="grid-33 mobile-grid-100">
+        <h1>Luke Turner</h1>
+        <p>
+            Hi. I'm a 22y.o. software developer with focuses on full-stack Web development,
+            C#, AI, ML, Python, and whatever else I find exciting.
+        </p>
+        <p>
+            I graduated Gonzaga University in 2013 (at the tender age of 20) with honors
+            and a B.S. in Math and Computer Science.
+        </p>
+        <p>
+            I'm currently employed at Epic, where I work on the enterprise SOA platform
+            that drives much of our networking infrastructure. This can be pretty
+            interesting, but I'm not allowed to talk about it much. That's why this page
+            is devoted to my non-work-related projects.
+        </p>
+        <p>
+            If you want to read more, you can check out my
+            <a href="http://blog.luketurner.org">blog</a>, or visit my profile on
+            <a href="https://github.com/luketurner">Github</a>. I also have a
+            <a href="http://goodreads.com/luke_turner">reading list</a>,
+            and a goal of reading 75 books this year (currently at 53).
+        </p>
+    </div>
+    <div class="grid-33 mobile-grid-100">
+        <h2>Side Projects</h2>
+        <dl>
+            <dt><a href="/PersonalPVT">PersonalPVT</a> • <a href="https://github.com/luketurner/PersonalPVT">source</a></dt>
+            <dd>A psychomotor vigilance testing application in AngularJS</dd>
+            <dt><a href="/quasar-machine">Quasar Machine</a> • <a href="https://github.com/luketurner/quasar-machine">source</a></dt>
+            <dd>[WIP] Procedural quasar generation using CoffeeScript and Three.js</dd>
+        </dl>
 
-		</header>
-		<div id="sidebar">
-    <h3>Creds</h3>
-    <dl>
-        <dt>B.Sc. Math &amp; Comp Sci</dt>
-        <dd>Gonzaga University</dd>
-    </dl>
-    <h3>Links</h3>
-    <a href="http://github.com/luketurner">Github</a>
-
-		</div>
-
-        <div id="content-container">
-                <dl class="category-list">
-        <dt><a href="/Blog">Blog</a></dt>
-            <dd><a href="Blog/Agile%20before%20Agile%20John%20Boyd%20and%20the%20OODA%20loop">Agile before Agile: John Boyd and the <span class="caps">OODA</span>&nbsp;loop</a></dd>
-            <dd><a href="Blog/Hotel%20Dreams">Hotel&nbsp;Dreams</a></dd>
-            <dd><a href="Blog/Cooking%20Tactics">Cooking&nbsp;Tactics</a></dd>
-            <dd><a href="Blog/Missing%20Slippers">Missing&nbsp;Slippers</a></dd>
-            <dd><a href="Blog/Hypnotainment">Hypnotainment</a></dd>
-            <dd><a href="Blog/First%20experience%20with%20competitive%20DotA">First experience with competitive&nbsp;DotA</a></dd>
-            <dd><a href="Blog/Monoidealism">Monoidealism</a></dd>
-            <dd><a href="Blog/Thoughtless%20Productivity">Thoughtless&nbsp;Productivity</a></dd>
-            <dd><a href="Blog/Skewomorphism">Skewomorphism: second-order&nbsp;mimesis</a></dd>
-            <dd><a href="Blog/Accelerando">Accelerando</a></dd>
-            <dd><a href="Blog/Github%20Webhooks%20Octopress%20and%20Python">Github, Webhooks, Octopress, and&nbsp;Python</a></dd>
-    </dl>
-
-                <dl class="category-list">
-        <dt><a href="/Personal">Personal</a></dt>
-            <dd><a href="Personal/75%20books">75&nbsp;books</a></dd>
-            <dd><a href="Personal/Reading%20List">Reading&nbsp;List</a></dd>
-    </dl>
-
-                <dl class="category-list">
-        <dt><a href="/Programming">Programming</a></dt>
-            <dd><a href="Programming/Testing%20non-deterministic%20algorithms%20with%20QUnit">Testing random algorithms with&nbsp;QUnit</a></dd>
-            <dd><a href="Programming/Notes%20on%20Scraping%20Steam%20Marketplace">Notes on Scraping Steam&nbsp;Marketplace</a></dd>
-            <dd><a href="Programming/Big%20regexes">Big regexes in eXtended&nbsp;mode</a></dd>
-            <dd><a href="Programming/n-grams">n-grams</a></dd>
-            <dd><a href="Programming/Write%20Yourself%20a%20Scheme">Write Yourself a&nbsp;Scheme</a></dd>
-    </dl>
-
-
-        </div>
-
-		<footer>
-			<p>Copyright Luke Turner 2013</p>
-		</footer>
-	</div>
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-26056211-1', 'luketurner.org');
-        ga('send', 'pageview');
-    </script>
+        <h2>IPython Notebooks</h2>
+        <dl>
+            <dt><a href="http://nbviewer.ipython.org/github/luketurner/ipython-notebooks/blob/master/notebooks/n-gram%20tutorial.ipynb">n-gram tutorial</a> • <a href="https://github.com/luketurner/ipython-notebooks/blob/master/notebooks/n-gram%20tutorial.ipynb">source</a></dt>
+            <dd>Incomplete tutorial on writing an n-gram model in Python</dd>
+        </dl>
+    </div>
 </body>
 </html>
