@@ -4,23 +4,38 @@
     <meta charset="utf-8">
     <title>Luke Turner</title>
     <meta name="author" content="Luke Turner">
-    <link href="unsemantic-grid-responsive-no-ie7.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <style>
-        body { font: 14px "Open Sans",sans-serif; }
-        h1, h2, h3, h4, h5, h6 { font-weight: normal; }
-        dt { color: gray; }
-        ul { list-style: none; }
-        a, a:visited, a:hover { color: #0095DD; text-decoration: none; }
+        * { box-sizing: border-box; }
+        body { font:14px "Open Sans",sans-serif; margin:auto; max-width:1200px; }
+        section { display:inline-block; width:33%; margin:0; padding:0px 10px; vertical-align:top; }
+        h1, h2, h3, h4, h5, h6 { font-weight:normal; }
+        h1 { font-size:2em; }
+        h2 { font-size:1.5em; }
+        dt { color:gray; }
+        ul { list-style:none; }
+        a, a:visited, a:hover { color:#0095DD; text-decoration:none; }
+        @media (max-width: 1200px) { section { width: 50%; } }
+        @media (max-width: 800px) { section { width: 100%; } }
     </style>
 </head>
-<body class="grid-container">
-    <div class="grid-33 mobile-grid-100">
+<body>
+    <section>
         <h1>Luke Turner</h1>
         <p>
-            Hi. I'm a 22y.o. software developer with focuses on full-stack Web development,
+            Welcome to my homepage. I'm a 23y.o. software developer with focuses on full-stack Web development,
             Web service infrastructure, C#, AI, Python, and whatever else I find exciting. 
-            Currently: <a href="https://github.com/clojure/clojurescript">Clojurescript</a>, <a href="http://nim-lang.org/">Nim</a>.
+            Currently: 
+            <a href="https://github.com/clojure/clojurescript">Clojurescript</a>, 
+            <a href="http://nim-lang.org/">Nim</a>.
+        </p>
+        <p>
+            You might ask, why bother to have a homepage in the era of LinkedIn, Facebook, 
+            Medium, and Twitter? For me, homepages are a reminder of what the Web was first
+            meant to be. A blank slate for expressing yourself. An emphasis on content over
+            form. A network of links that let you dig deeper into interesting topics. Pages
+            emphasizing ideas, individualism, creations, and projects &mdash; not firehose
+            news feeds or auto-tagged vacation photos.
         </p>
         <p>
             I graduated Gonzaga University in 2013 (at the tender age of 20) with honors
@@ -28,43 +43,72 @@
         </p>
         <p>
             I'm currently employed at Epic, where I work on the enterprise SOA platform
-            that drives many of our applications. This can be pretty
-            interesting, but I'm not supposed to talk about it much. That's why this page
-            is devoted to my non-work-related projects. I will say that my job mostly focuses
-            on a wide range of C# development, including the WCF and ASP.NET networking stacks,
-            MVC and Web API frameworks, Windows Forms development (ugh), and custom enterprise networking
-            framework development. Like many other EMR applications, we use M (specifically, 
-            InterSystems Caché) for our database.
+            that drives many of our applications. My job mostly focuses on a wide range 
+            of C# development, including the WCF and ASP.NET networking stacks, MVC and 
+            Web API frameworks, and custom enterprise networking framework development. 
+            This can be pretty interesting, but I'm not supposed to talk about it much. 
+            That's why this page is devoted to my non-work-related projects.
         </p>
         <p>
             If you want to read more, you can check out my
             <a href="http://blog.luketurner.org">blog</a>, or visit my profile on
-            <a href="https://github.com/luketurner">Github</a>. I also have a
-            <a href="http://goodreads.com/luke_turner">reading list</a>.
+            <a href="https://github.com/luketurner">Github</a>.
         </p>
-    </div>
-    <div class="grid-33 mobile-grid-100">
+    </section><!--
+    --><section>
         <h2>Side Projects</h2>
         <dl>
-            <dt><a href="/sudoku">Sudoku</a> • <a href="https://github.com/luketurner/sudoku">source</a></dt>
-            <dd>A Sudoku game in your browser. Includes a puzzle solver and on-the-fly client-side puzzle generation. Built using starter-kit.</dd>
-            <dt><a href="https://github.com/luketurner/starter-kit">starter-kit</a></dt>
-            <dd>Scaffold for getting up and running quickly with client-side Javascript development. Includes build tooling with webpack, and scaffolded Flux-inspired hackable webapp architecture code in CoffeeScript.</dd>
-            <dt><a href="https://github.com/luketurner/flymirror">flymirror.py</a></dt>
-            <dd>Tiny, multithreaded, rule-based mirroring script (for bulk downloads or hypermedia traversal). Contained in a single .py file.</dd>
-            <dt><a href="http://context.luketurner.org">Context Commander</a> • <a href="https://github.com/luketurner/context-commander">source</a></dt>
+            <dt>
+                <a href="/sudoku">s&micro;doku</a> •
+                <a href="https://github.com/luketurner/sudoku">source</a>
+            </dt>
+            <dd>
+                Minimal yet feature-rich Sudoku game for desktop and mobile.
+                Includes puzzle solving and on-the-fly puzzle generation. 
+                Built using starter-kit.
+            </dd>
+
+            <dt>
+                <a href="https://github.com/luketurner/starter-kit">starter-kit</a>
+            </dt>
+            <dd>
+                Scaffold for getting up and running quickly with client-side Javascript development. Includes build tooling with webpack, and scaffolded Flux-inspired hackable webapp architecture code in CoffeeScript.
+            </dd>
+
+            <dt>
+                <a href="https://github.com/luketurner/flymirror">flymirror.py</a>
+            </dt>
+            <dd>
+                Tiny, multithreaded, rule-based mirroring script (for bulk downloads or hypermedia traversal). Contained in a single .py file.
+            </dd>
+
+            <dt>
+                <a href="http://context.luketurner.org">Context Commander</a> •
+                <a href="https://github.com/luketurner/context-commander">source</a>
+            </dt>
             <dd>
                 Web app for adding Windows Explorer context menu entries without downloading any software. 
                 Built with React and Node/Koa.
             </dd>
-            <dt><a href="/PersonalPVT">PersonalPVT</a> • <a href="https://github.com/luketurner/PersonalPVT">source</a></dt>
-            <dd>A psychomotor vigilance testing application. Runs fully client-side using in-browser data stores. Built with Angular.</dd>
+
+            <dt>
+                <a href="/PersonalPVT">PersonalPVT</a> •
+                <a href="https://github.com/luketurner/PersonalPVT">source</a>
+            </dt>
+            <dd>
+                A psychomotor vigilance testing application. Runs fully client-side using in-browser data stores. Built with Angular.
+            </dd>
         </dl>
         <h2>IPython Notebooks</h2>
         <dl>
-            <dt><a href="http://nbviewer.ipython.org/github/luketurner/ipython-notebooks/blob/master/notebooks/n-gram%20tutorial.ipynb">n-gram tutorial</a> • <a href="https://github.com/luketurner/ipython-notebooks/blob/master/notebooks/n-gram%20tutorial.ipynb">source</a></dt>
-            <dd>Incomplete tutorial on writing an n-gram model in Python</dd>
+            <dt>
+                <a href="http://nbviewer.ipython.org/github/luketurner/ipython-notebooks/blob/master/notebooks/n-gram%20tutorial.ipynb">n-gram tutorial</a> • 
+                <a href="https://github.com/luketurner/ipython-notebooks/blob/master/notebooks/n-gram%20tutorial.ipynb">source</a>
+            </dt>
+            <dd>
+                Tutorial on writing an n-gram model in Python.
+            </dd>
         </dl>
-    </div>
+    </section>
 </body>
 </html>
