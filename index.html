@@ -12,7 +12,7 @@
         h1, h2, h3, h4, h5, h6 { font-weight:normal; }
         h1 { font-size:2em; }
         h2 { font-size:1.5em; }
-        dt { color:gray; }
+        dt { color:gray; margin-top: 0.25rem; }
         ul { list-style:none; }
         a, a:visited, a:hover { color:#0095DD; text-decoration:none; }
         @media (max-width: 1200px) { section { width: 50%; } }
@@ -56,16 +56,18 @@
         </p>
     </section><!--
     --><section>
-        <h2>Side Projects</h2>
+
+        <h2>Websites</h2>
+
         <dl>
             <dt>
-                <a href="https://github.com/luketurner/shboard">shboard</a>
+                <a href="/golem">G.O.L.EM.</a> •
+                <a href="https://github.com/luketurner/golem">source</a>
             </dt>
             <dd>
-                Terminal-based dashboard for AWS servers. Designed for rapid access to important information.
-                Can integrate with New Relic Servers for inline metrics. Built with
-                <a href="https://github.com/chjj/blessed">Blessed</a> and
-                <a href="https://github.com/clojure/clojurescript">Clojurescript</a>,
+                Interactive Conway's Game of Life implemented with Clojurescript and HTML 
+                Canvas. Supports importing/exporting RLE-formatted patterns and
+                creating your own patterns in a point-and-click manner.
             </dd>
             
             <dt>
@@ -75,18 +77,76 @@
             <dd>
                 Lightweight (&lt;100 kb) yet feature-rich Sudoku game for desktop and mobile.
                 Includes puzzle solving, configurable puzzle generation, and quick notes. 
-                Built using starter-kit (see below).
+                Built using starter-kit (see <em>Libraries</em>).
             </dd>
 
+            <dt>
+                <a href="/PersonalPVT">PersonalPVT</a> •
+                <a href="https://github.com/luketurner/PersonalPVT">source</a>
+            </dt>
+            <dd>
+                A psychomotor vigilance testing application. Runs fully client-side using
+                in-browser data stores. Built with Angular 1.3.
+            </dd>
+
+            <dt>
+                <span title="No longer hosted online; click &quot;source&quot; for installation instructions">
+                    Context Commander
+                </span> •
+                <a href="https://github.com/luketurner/context-commander">source</a>
+            </dt>
+            <dd>
+                A Web app that allows you to install custom context menu entries for Windows
+                Explorer. Unlike similar tools, it requires no registry access or special
+                permissions. Instead, it generates a <code>.reg</code> file that you can download
+                and run.
+            </dd>
+        </dl>
+
+        <h2>Libraries</h2>
+
+        <dl>
             <dt>
                 <a href="https://github.com/luketurner/starter-kit">starter-kit</a>
             </dt>
             <dd>
                 Scaffold for getting up and running quickly with client-side Javascript development.
-                Includes build tooling with webpack, and scaffolded Flux-inspired webapp
-                wiring written in Literate CoffeeScript.
+                Includes build tooling with webpack, and self-documenting Flux-inspired modules
+                written in Literate CoffeeScript.
+            </dd>
+            
+            <dt>
+                <a href="https://github.com/luketurner/contextext.py">contextext.py</a>
+            </dt>
+            <dd>
+                A Python library for generating <code>.reg</code> files that can be executed to add context menu
+                entries to Windows Explorer. Deprecated by Context Commander (see <em>Websites</em>).
+            </dd>
+        </dl>
+    </section><!--
+    --><section>
+
+        <h2>Utilities</h2>
+
+        <dl>
+            <dt>
+                <a href="https://github.com/luketurner/shboard">shboard</a>
+            </dt>
+            <dd>
+                Terminal-based dashboard for AWS servers. Designed for rapid access to important information.
+                Can integrate with New Relic Servers for inline metrics. Built with
+                <a href="https://github.com/chjj/blessed">Blessed</a> +
+                <a href="https://github.com/clojure/clojurescript">CLJS</a>.
             </dd>
 
+            <dt>
+                <a href="https://github.com/luketurner/fitocracy-export">fitocracy-export</a>
+            </dt>
+            <dd>
+                Python utility for exporting personal exercise history from Fitocracy. Uses
+                undocumented Fitocracy.com XHR APIs since no official method was available.
+            </dd>
+            
             <dt>
                 <a href="https://github.com/luketurner/flymirror">flymirror.py</a>
             </dt>
@@ -96,14 +156,31 @@
             </dd>
 
             <dt>
-                <a href="/PersonalPVT">PersonalPVT</a> •
-                <a href="https://github.com/luketurner/PersonalPVT">source</a>
+                <a href="https://github.com/luketurner/apns-testing-server">apns-testing-server</a>
             </dt>
             <dd>
-                A psychomotor vigilance testing application. Runs fully client-side using in-browser data stores. Built with Angular 1.3.
+                A simple Python implementation of an APNS v2 server, for use in APNS client debugging.
+            </dd>
+
+            <dt>
+                <a href="https://github.com/luketurner/mkjunk">mkjunk</a>
+            </dt>
+            <dd>
+                A CLI tool that outputs a specified amount of meaningless, but safe (non-random)
+                data. Useful for generating requests for API stress testing.
+            </dd>
+
+            <dt>
+                <a href="https://github.com/luketurner/lpass-add">lpass-add</a> / <a href="https://github.com/luketurner/lpass-env">lpass-env</a>
+            </dt>
+            <dd>
+                A pair of lightweight scripts for managing operational secrets (SSH keys and
+                environment variables, respectively) in LastPass.
             </dd>
         </dl>
+
         <h2>IPython Notebooks</h2>
+
         <dl>
             <dt>
                 <a href="http://nbviewer.ipython.org/github/luketurner/ipython-notebooks/blob/master/notebooks/n-gram%20tutorial.ipynb">n-gram tutorial</a> • 
