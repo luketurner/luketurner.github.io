@@ -6,17 +6,19 @@
     <meta name="author" content="Luke Turner">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing:border-box; }
         body { font:14px "Open Sans",sans-serif; margin:auto; max-width:1200px; }
         section { display:inline-block; width:33%; margin:0; padding:0px 10px; vertical-align:top; }
         h1, h2, h3, h4, h5, h6 { font-weight:normal; }
         h1 { font-size:2em; }
         h2 { font-size:1.5em; }
-        dt { color:gray; margin-top: 0.25rem; }
+        dt { color:gray; clear:left; margin-bottom:0.25rem; }
         ul { list-style:none; }
         a, a:visited, a:hover { color:#0095DD; text-decoration:none; }
-        @media (max-width: 1200px) { section { width: 50%; } }
-        @media (max-width: 800px) { section { width: 100%; } }
+        dd { margin:0 0 0.5rem 40px;  }
+        dd img { float:left; width:75px; height:75px; margin:5px 5px 10px -35px; border-radius:5px; padding:5px; border:1px solid #0095DD;}
+        @media (max-width: 1200px) { section { width:50%; } }
+        @media (max-width: 800px) { section { width:100%; } }
     </style>
 </head>
 <body>
@@ -63,9 +65,11 @@
         <dl>
             <dt>
                 <a href="https://factor.luketurner.org">Factor</a> (desktop only) •
-                <a href="https://github.com/luketurner/factor">source</a>
+                <a href="https://sr.ht/~luketurner/factor">source</a> •
+                <a href="https://github.com/luketurner/factor">alt. source</a>
             </dt>
             <dd>
+                <a href="static/factor.png"><img src="static/factor.png" alt="Screenshot of Factor showing a production graph" title="Screenshot of Factor showing a production graph"></a>
                 A Web-based tool for calculating production rates and ratios in factory games.
                 If you've ever played Factorio and found yourself spending more hours
                 on making spreadsheets than playing the game, you understand the use-case
@@ -78,6 +82,7 @@
                 <a href="https://github.com/luketurner/golem">source</a>
             </dt>
             <dd>
+                <a href="static/golem.png"><img src="static/golem.png" alt="Screenshot of Golem showing the acorn pattern" title="Screenshot of Golem showing the acorn pattern"></a>
                 Interactive Conway's Game of Life implemented with Clojurescript and HTML 
                 Canvas. Supports importing/exporting RLE-formatted patterns and
                 creating your own patterns in a point-and-click manner.
@@ -88,6 +93,7 @@
                 <a href="https://github.com/luketurner/sudoku">source</a>
             </dt>
             <dd>
+                <a href="static/sudoku.png"><img src="static/sudoku.png" alt="Screenshot of a Sudoku game being played" title="Screenshot of a Sudoku game being played"></a>
                 Lightweight (&lt;100 kb) yet feature-rich Sudoku game for desktop and mobile.
                 Includes puzzle solving, configurable puzzle generation, and quick notes. 
                 Built using starter-kit (see <em>Libraries</em>).
@@ -98,6 +104,7 @@
                 <a href="https://github.com/luketurner/PersonalPVT">source</a>
             </dt>
             <dd>
+                <a href="static/ppvt.png"><img src="static/ppvt.png" alt="Screenshot of PersonalPVT's homepage" title="Screenshot of PersonalPVT's homepage"></a>
                 A psychomotor vigilance testing application. Runs fully client-side using
                 in-browser data stores. Built with Angular 1.3.
             </dd>
@@ -109,6 +116,7 @@
                 <a href="https://github.com/luketurner/context-commander">source</a>
             </dt>
             <dd>
+                <a href="static/context.png"><img src="static/context.png" alt="Screenshot of Context Commander" title="Screenshot of Context Commander"></a>
                 A Web app that allows you to install custom context menu entries for Windows
                 Explorer. Unlike similar tools, it requires no registry access or special
                 permissions. Instead, it generates a <code>.reg</code> file that you can download
