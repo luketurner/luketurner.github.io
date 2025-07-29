@@ -244,13 +244,20 @@
                 <a href="https://github.com/luketurner/webhook-testing-tool">webhook-testing-tool</a>
             </dt>
             <dd>
-                An open-source, personal-use webhook testing server, similar to <a href="https://webhook.site">webhook.site</a>.
-                Responds to all incoming HTTP requests, and provides a Web UI for viewing a log of
-                requests and responses. Responses can be generated dynamically using JS scripts.
-                Useful for testing webhooks, HTTP clients, etc.
+                <a href="static/wtt.png">
+                    <img
+                        src="static/wtt.png"
+                        alt="Screenshot of Webhook Testing Tool inspecting an example HTTP request."
+                        title="Screenshot of Webhook Testing Tool inspecting an example HTTP request."
+                    >
+                </a>
+                An open-source, single-binary, zero-dependency webhook testing server, similar to <a href="https://webhook.site">webhook.site</a>.
+                Responds to incoming HTTP, HTTPS, and TCP requests, and provides a Web UI for viewing a log of
+                requests and responses. Responses can be customized with Typescript handlers. Can also inspect/verify JWTs,
+                verify HMAC signatures, view/download payloads in a variety of encodings including hex, binary, etc.
+                Useful for testing SaaS webhooks, HTTP or TCP clients, etc.
                 Written for the <a href="https://bun.sh/">Bun</a> runtime.
                 Uses <a href="https://www.sqlite.org/">SQLite</a> for storage.
-                Designed to be easily deployed on <a href="https://fly.io/">Fly.io</a>.
             </dd>
             <dt>
                 <a href="https://github.com/luketurner/gitea-fly-connector">gitea-fly-connector</a>
